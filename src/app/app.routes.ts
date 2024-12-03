@@ -4,8 +4,9 @@ import { ErrorComponent } from './error/error.component';
 import { LoginComponent } from './user/login/login.component';
 import { RegisterComponent } from './user/register/register.component';
 import { ProfileComponent } from './user/profile/profile.component';
-import { AddItemComponent } from './item/add-item/add-item.component';
-import { ItemsComponent } from './item/items/items.component';
+import { AddPositionComponent } from './position/add-position/add-position.component';
+import { PositionListComponent } from './position/position-list/position-list.component';
+import { EditPositionComponent } from './position/edit-position/edit-position.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -14,8 +15,8 @@ export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'profile', component: ProfileComponent },
-  { path: 'add-item', component: AddItemComponent },
-  { path: 'edit-item/:id', component: AddItemComponent },
-  { path: 'items', component: ItemsComponent },
+  { path: 'add-position', component: AddPositionComponent },
+  { path: 'edit-position/:id', component: EditPositionComponent },
+  { path: 'list', component: PositionListComponent },
   { path: '**', redirectTo: '/404' },
 ];
