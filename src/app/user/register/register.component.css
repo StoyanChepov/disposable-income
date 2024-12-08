@@ -99,7 +99,7 @@ form.login, form.register {
 p.error {
     text-align: left;
     border-radius: 0.5em;
-    color: red;
+    color: red !important;
     padding-top: 0;
     font-weight: bold;
 }

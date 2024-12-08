@@ -1,38 +1,53 @@
 <div class="container">
-    <form class="login" action="" method="post">
+  <form class="login" [formGroup]="form" (ngSubmit)="login()">
+    <fieldset>
+      <h2>Login Form</h2>
 
-        <fieldset>
-            <h2>Login Form</h2>
+      <p class="field field-icon">
+        <label for="email"
+          ><span><i class="fas fa-envelope"></i></span
+        ></label>
+        <input
+          class="input-error"
+          type="email"
+          name="email"
+          id="email"
+          placeholder="john.doe@gmail.com"
+          formControlName="email"
+        />
+      </p>
 
-            <p class="field field-icon">
-                <label for="email"><span><i class="fas fa-envelope"></i></span></label>
-                <input class="input-error" type="email" name="email" id="email" placeholder="john.doe@gmail.com">
-            </p>
-            <p class="error">
-                Email is required!
-            </p>
-            <!-- <p class="error">
-                Email is not valid!
-            </p> -->
+      @if(form.get('email')?.touched) {
+      <div>
+        @if(form.get('email')?.errors?.['required']) {
+        <p>Email is required</p>
+        }
+      </div>
+      }
 
-            <p class="field field-icon">
-                <label for="password"><span><i class="fas fa-lock"></i></span></label>
-                <input type="password" name="password" id="password" placeholder="******">
-            </p>
-            <!-- <p class="error">
-                Password is required!
-            </p>
-            <p class="error">
-                Password must be at least 4 characters!
-            </p> -->
+      <p class="field field-icon">
+        <label for="password"
+          ><span><i class="fas fa-lock"></i></span
+        ></label>
+        <input
+          type="password"
+          name="password"
+          id="password"
+          placeholder="******"
+          formControlName="password"
+        />
+      </p>
+      <button
+        [disabled]="form.invalid"
+        [style]="{ cursor: form.invalid ? 'not-allowed' : 'pointer' }"
+      >
+        Login
+      </button>
 
-            <button disabled>Login</button>
-
-            <p class="text-center">
-                Don't have an account?
-                <a routerLink="/register">Register</a>
-            </p>
-
-        </fieldset>
-    </form>
+      <p class="text-center">
+        Don't have an account?
+        <a routerLink="/register">Register</a>
+      </p>
+    </fieldset>
+  </form>
 </div>

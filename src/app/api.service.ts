@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Position } from './types/position';
-import { environment } from '../environments/environment';
 @Injectable({
   providedIn: 'root',
 })
@@ -9,8 +8,7 @@ export class ApiService {
   constructor(private http: HttpClient) {}
 
   getPositions() {
-    const { BASE_URL } = environment;
-    return this.http.get<Position[]>(`${BASE_URL}`);
+    return this.http.get<Position[]>(`/api/expenses`);
   }
 
   getPositionById(id: string) {
