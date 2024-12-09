@@ -8,7 +8,7 @@
           ><span><i class="fas fa-envelope"></i></span
         ></label>
         <input
-          class="input-error"
+          [class]="isInputEmpty('email') ? 'input-error' : ''"
           type="email"
           name="email"
           id="email"
@@ -21,6 +21,8 @@
       <div>
         @if(form.get('email')?.errors?.['required']) {
         <p>Email is required</p>
+        } @if(form.get('email')?.errors?.['emailValidator']) {
+        <p>Email is not valid</p>
         }
       </div>
       }
@@ -30,6 +32,7 @@
           ><span><i class="fas fa-lock"></i></span
         ></label>
         <input
+          [class]="isInputEmpty('password') ? 'input-error' : ''"
           type="password"
           name="password"
           id="password"
@@ -37,6 +40,14 @@
           formControlName="password"
         />
       </p>
+      @if(form.get('password')?.touched) {
+      <div>
+        @if(form.get('password')?.errors?.['required']) {
+        <p>Password is required</p>
+        }
+      </div>
+      }
+
       <button
         [disabled]="form.invalid"
         [style]="{ cursor: form.invalid ? 'not-allowed' : 'pointer' }"

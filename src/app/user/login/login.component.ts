@@ -9,6 +9,8 @@ import {
   Validators,
   ReactiveFormsModule,
 } from '@angular/forms';
+import { emailValidator } from '../../utils/email.validator';
+import { SUFFIXES } from '../../constants';
 
 @Component({
   selector: 'app-login',
@@ -21,12 +23,23 @@ export class LoginComponent {
   constructor(private userService: UserService, private router: Router) {}
 
   form = new FormGroup({
-    email: new FormControl('', [Validators.required, Validators.email]),
+    email: new FormControl('', [
+      Validators.required,
+      Validators.email,
+      emailValidator(SUFFIXES),
+    ]),
     password: new FormControl('', [
       Validators.required,
       Validators.minLength(5),
     ]),
   });
+
+  isInputEmpty(controlName: string) {
+    return (
+      this.form.get(controlName)?.touched &&
+      this.form.get(controlName)?.errors?.['required']
+    );
+  }
 
   login() {
     if (this.form.invalid) {

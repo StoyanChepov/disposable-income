@@ -71,14 +71,7 @@
         }
       </div>
       }
-      <!-- <p class="error">
-                Password is required!
-            </p>
-            <p class="error">
-                Password must be at least 4 characters!
-            </p> -->
 
-      <!-- rePassword -->
       <p class="field field-icon">
         <label for="rePassword"
           ><span><i class="fas fa-lock"></i></span
@@ -94,7 +87,12 @@
           minlength="5"
         />
       </p>
-      <!-- <p class="error">Repeat Password does not match password!</p> -->
+
+      <!-- Password mismatch error -->
+      @if(inputPassword?.value && inputRePassword?.value && inputPassword?.value
+      !== inputRePassword?.value) {
+      <p class="error">Passwords do not match!</p>
+      }
 
       <button [disabled]="form.invalid">Create Account</button>
 
