@@ -5,14 +5,14 @@
 
       <p class="field field-icon">
         <label for="email"
-          ><span><i class="fas fa-envelope"></i></span
-        ></label>
+          ><span><i class="fas fa-envelope"></i></span>Email:</label
+        >
         <input
           [class]="isInputEmpty('email') ? 'input-error' : ''"
           type="email"
           name="email"
           id="email"
-          placeholder="john.doe@gmail.com"
+          placeholder="Enter your email"
           formControlName="email"
         />
       </p>
@@ -29,14 +29,14 @@
 
       <p class="field field-icon">
         <label for="password"
-          ><span><i class="fas fa-lock"></i></span
-        ></label>
+          ><span><i class="fas fa-lock"></i></span>Password:</label
+        >
         <input
           [class]="isInputEmpty('password') ? 'input-error' : ''"
           type="password"
           name="password"
           id="password"
-          placeholder="******"
+          placeholder="Enter your password"
           formControlName="password"
         />
       </p>
@@ -47,8 +47,8 @@
         }
       </div>
       }
-
       <button
+        class="button"
         [disabled]="form.invalid"
         [style]="{ cursor: form.invalid ? 'not-allowed' : 'pointer' }"
       >

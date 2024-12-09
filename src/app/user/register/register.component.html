@@ -6,14 +6,14 @@
       <!-- email -->
       <p class="field field-icon">
         <label for="email"
-          ><span><i class="fas fa-envelope"></i></span
-        ></label>
+          ><span><i class="fas fa-envelope"></i></span>Email:</label
+        >
         <input
           [class]="(inputEmail?.touched && (inputEmail?.errors?.['required'] || inputEmail?.errors?.['emailValidator'])) ? 'input-error' : ''"
           type="email"
           name="email"
           id="email"
-          placeholder="john.doe&#64;gmail.com"
+          placeholder="Enter your email"
           ngModel
           #inputEmail="ngModel"
           required
@@ -48,13 +48,13 @@
       <!-- password -->
       <p class="field field-icon">
         <label for="password"
-          ><span><i class="fas fa-lock"></i></span
-        ></label>
+          ><span><i class="fas fa-lock"></i></span>Password:</label
+        >
         <input
           type="password"
           name="password"
           id="password"
-          placeholder="******"
+          placeholder="Enter your password"
           ngModel
           #inputPassword="ngModel"
           required
@@ -74,13 +74,13 @@
 
       <p class="field field-icon">
         <label for="rePassword"
-          ><span><i class="fas fa-lock"></i></span
-        ></label>
+          ><span><i class="fas fa-lock"></i></span>Re-Password:</label
+        >
         <input
           type="password"
           name="rePassword"
           id="rePassword"
-          placeholder="******"
+          placeholder="Re-enter your password"
           ngModel
           #inputRePassword="ngModel"
           required
@@ -94,7 +94,7 @@
       <p class="error">Passwords do not match!</p>
       }
 
-      <button [disabled]="form.invalid">Create Account</button>
+      <button class="button" [disabled]="form.invalid">Create Account</button>
 
       <p class="text-center">
         Have an account?

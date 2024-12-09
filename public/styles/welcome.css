@@ -1,0 +1,127 @@
+.welcome-message h2 {
+  color: black;
+  font-size: 300%;
+  font-size: 55px;
+  line-height: 1;
+  font-weight: 700;
+  letter-spacing: normal;
+  word-spacing: normal;
+  text-transform: uppercase;
+  text-shadow: 0 2px 4.8px rgba(0, 0, 0, 0.3);
+  font-family: "Agency FB";
+}
+
+.welcome-message h3 {
+  color: black;
+  font-size: 400%;
+  text-shadow: none;
+  line-height: 1;
+  font-weight: 700;
+  text-align: center;
+  letter-spacing: normal;
+  word-spacing: normal;
+  text-transform: uppercase;
+  font-weight: 700;
+  font-family: "Agency FB";
+}
+
+.expense {
+  box-shadow: 0px 0px 30px 0px;
+  margin-top: 20px;
+  padding: 50px;
+  margin-left: 50px;
+  background-position: right 35% bottom 45%;
+  box-sizing: border-box;
+  border-radius: 15px;
+  float: left;
+  height: auto;
+  color: rgb(100, 144, 131);
+}
+
+.image-wrap {
+  width: 250px;
+  height: 250px;
+  display: inline-block;
+  border-radius: 50%;
+  overflow: hidden;
+  position: relative;
+  text-align: center;
+}
+
+.image-wrap > img {
+  max-width: 100%;
+}
+
+.expense > h3 {
+  font-family: "Agency FB";
+  font-size: 42px;
+  font-weight: 700;
+  line-height: normal;
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: all 0.5s ease-out;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.expense-content > h4 {
+  color: #c2d4f8;
+  font-size: 24px;
+  text-align: center;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.rating {
+  unicode-bidi: bidi-override;
+  text-align: center;
+  direction: rtl;
+}
+
+.rating span {
+  font-size: 40px;
+  padding: 4px;
+}
+
+.rating span:before {
+  content: "\2605";
+  position: absolute;
+  color: gold;
+}
+
+.details-btn {
+  background-color: #fd5454;
+  font-size: 1.4rem;
+  padding-top: 20px;
+  margin-top: 10px;
+  color: white;
+  padding: 0.9em 1.4em;
+}
+
+.data-buttons {
+  font-size: 1.4rem;
+  padding-top: 20px;
+  text-align: center;
+}
+
+.btn.details-btn:hover {
+  background-color: rgb(192, 129, 117);
+  color: white;
+}
+
+#home-page > h1 {
+  color: rgb(252, 168, 151);
+  text-align: center;
+  font-weight: 700;
+  font-size: 84px;
+  font-family: "Agency FB";
+}
+
+.no-articles {
+  color: white;
+  text-align: center;
+  font-weight: 700;
+  font-size: 60px;
+  font-family: "Agency FB";
+}
