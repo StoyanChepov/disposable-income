@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
-
+import { UserService } from '../../user/user.service';
 @Component({
   selector: 'app-header',
   standalone: true,
@@ -9,5 +9,15 @@ import { RouterLink } from '@angular/router';
   styleUrl: './header.component.css',
 })
 export class HeaderComponent {
-  isLoggedIn = false;
+  get isLoggedIn(): boolean {
+    return this.userService.isLogged;
+  }
+
+  constructor(private userService: UserService) {}
+
+  logout() {
+    this.userService.logout().subscribe(() => {
+      console.log('User logged out');
+    });
+  }
 }

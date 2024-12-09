@@ -17,11 +17,9 @@
     } @if(isLoggedIn) {
     <div class="mini-navbar">
       <ul>
+
         <li>
-          <a routerLink="/profile">My Profile</a>
-        </li>
-        <li>
-          <a routerLink="/logout">Logout</a>
+          <a (click)="logout()">Logout</a>
         </li>
       </ul>
     </div>
