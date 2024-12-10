@@ -6,6 +6,7 @@ import { RegisterComponent } from './user/register/register.component';
 import { AddPositionComponent } from './position/add-position/add-position.component';
 import { PositionListComponent } from './position/position-list/position-list.component';
 import { EditPositionComponent } from './position/edit-position/edit-position.component';
+import { AuthGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -13,7 +14,11 @@ export const routes: Routes = [
   { path: '404', component: ErrorComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
-  { path: 'add-position', component: AddPositionComponent },
+  {
+    path: 'add-position',
+    component: AddPositionComponent,
+    canActivate: [AuthGuard],
+  },
   { path: 'edit-position/:id', component: EditPositionComponent },
   { path: 'list', component: PositionListComponent },
   { path: 'logout', redirectTo: '/login' },

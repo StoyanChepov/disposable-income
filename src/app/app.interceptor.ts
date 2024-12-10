@@ -7,16 +7,9 @@ const API = '/api';
 export const appInterceptor: HttpInterceptorFn = (req, next) => {
   if (req.url.startsWith(API)) {
     req = req.clone({
-      url: req.url.replace('/api', BASE_URL),
+      url: req.url.replace(API, BASE_URL),
+      withCredentials: true,
     });
-    /* const auth = localStorage.getItem('auth');
-    if (auth) {
-      req = req.clone({
-        setHeaders: {
-          Authorization: `Bearer ${auth.accessToken}`,
-        },
-      });
-    }*/
   }
 
   return next(req);

@@ -1,23 +1,21 @@
-<div class="container">
-    <div class="welcome">
-        <h3>Welcome!</h3>
-        <p>SoftUni forum is a place, where you can post your questions, comment, and discuss problems, which
-            you have in your programming language or in your study in SoftUni.</p>
-        <div class="logged">
-            <ul>
-                <li>
-                    <a href="#">
-                        <i class="fas fa-sign-in-alt"></i>
-                        Login
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class="fas fa-user-plus"></i>
-                        Register
-                    </a>
-                </li>
-            </ul>
-        </div>
-    </div>        
-</div>
+<section id="home">
+  <div class="buttons">
+    <a class="button" id="edit-button" linkTo="/expenses/create?type=expense"
+      >Add Expense</a
+    >
+    <a class="button" id="edit-button" linkTo="/expenses/create?type=income"
+      >Add Income</a
+    >
+    <div class="latestExpenses">
+      <div class="welcome-message">
+        <h3>Latest Expenses</h3>
+      </div>
+      <div class="expense">
+        <h3>expense.title</h3>
+        <p>Amount: expense.amount $</p>
+        <p>Date: expense.date.split("T")[0]</p>
+        <p>Category: expense.category.name</p>
+      </div>
+    </div>
+  </div>
+</section>

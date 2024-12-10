@@ -1,43 +1,20 @@
 <header>
-  <div class="mini-navbar-wrap">
-    <div class="logo-wrap">
-      <p class="logo"><span class="logo">SoftUni Forum</span></p>
+  <h1>
+    <a class="home" routerLink="/"> Sened </a>
+  </h1>
+  <nav>
+    @if(isLoggedIn) {
+    <div id="user">
+      <a routerLink="/positions?type=income">Profits</a>
+      <a routerLink="/positions?type=expense">Expenses</a>
+      <a routerLink="/monitor">Data Analysis</a>
+      <a (click)="logout()">Logout</a>
     </div>
-    @if(!isLoggedIn) {
-    <div class="mini-navbar">
-      <ul>
-        <li>
-          <a routerLink="/login">Login</a>
-        </li>
-        <li>
-          <a routerLink="/register">Register</a>
-        </li>
-      </ul>
-    </div>
-    } @if(isLoggedIn) {
-    <div class="mini-navbar">
-      <ul>
-
-        <li>
-          <a (click)="logout()">Logout</a>
-        </li>
-      </ul>
+    } @else {
+    <div id="guest">
+      <a routerLink="/login">Login</a>
+      <a routerLink="/register">Register</a>
     </div>
     }
-  </div>
-  @if(isLoggedIn) {
-  <nav>
-    <ul>
-      <li>
-        <a routerLink="/home">Home</a>
-      </li>
-      <li>
-        <a routerLink="/items">Items</a>
-      </li>
-      <li>
-        <a routerLink="/add-item">New Item</a>
-      </li>
-    </ul>
   </nav>
-  }
 </header>
