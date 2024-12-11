@@ -9,6 +9,7 @@ import {
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { ApiService } from '../../api.service';
 import { Position } from '../../types/position';
+import { CategoryDialogHandler } from '../../categories/category-handler';
 
 @Component({
   selector: 'app-edit-position',
@@ -35,19 +36,27 @@ export class EditPositionComponent implements OnInit {
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
-    private apiService: ApiService //private categoryService: CategoryService
+    private apiService: ApiService, //private categoryService: CategoryService
+    private categoryDialogHandler: CategoryDialogHandler
   ) {}
 
   ngOnInit(): void {
     this.positionId = this.route.snapshot.paramMap.get('id')!;
-    this.loadExpense();
-    //this.loadCategories();
 
     this.editForm = this.fb.group({
       title: ['', Validators.required],
       date: ['', Validators.required],
-      category: ['', Validators.required],
-      amount: [{ value: 0, disabled: true }],
+      category: [null, Validators.required],
+      amount: [{ value: 0 }],
+    });
+
+    this.loadExpense();
+    this.loadCategories();
+  }
+
+  private loadCategories(): void {
+    this.apiService.getCategories().subscribe((categories) => {
+      this.categories = categories;
     });
   }
 
@@ -59,18 +68,20 @@ export class EditPositionComponent implements OnInit {
       this.editForm.patchValue({
         title: position.title,
         date: position.date?.toString().split('T')[0],
-        category: position.category,
+        category: position.category._id,
         amount: position.amount, //this.totalAmount,
       });
     });
   }
-  /*
-  private loadCategories(): void {
-    this.categoryService.getAllCategories().subscribe((categories) => {
-      this.categories = categories;
+  openCategoryModal(): void {
+    this.categoryDialogHandler.createCategoryHandler((newCategory) => {
+      if (newCategory) {
+        console.log('New category created:', newCategory);
+        this.categories.unshift(newCategory); // Add the new category to the list
+        this.editForm.controls['category'].setValue(newCategory._id); // Set it as selected
+      }
     });
   }
-*/
   onSubmit(): void {
     const formData = this.editForm.value;
     if (this.editForm.invalid) {
@@ -90,52 +101,7 @@ export class EditPositionComponent implements OnInit {
       .updatePosition(this.positionId, updatedPos)
       .subscribe(() => {
         sessionStorage.removeItem('itemPositionsEdit');
-        this.router.navigate([`/expenses/${this.positionId}/details`]);
+        this.router.navigate([`/positions/${this.positionId}/details`]);
       });
   }
-
-  /* updateTotalAmount(): void {
-    this.totalAmount = this.itemPositions.reduce(
-      (sum, item) => sum + item.quantity * item.price,
-      0
-    );
-    this.editForm.patchValue({ amount: this.totalAmount });
-  }
-  */
-  /*
-  handleItemPosCreate(itemPosition: ItemPosition): void {
-    itemPosition.status = 'new';
-    // this.itemPositions.push(itemPosition);
-    /* sessionStorage.setItem(
-      'itemPositionsEdit',
-      JSON.stringify(this.itemPositions)
-    );
-    this.updateTotalAmount();
-    this.showItemPosModal = false; 
-  }
-  handleItemPosEdit(itemPosition: ItemPosition): void {
-    itemPosition.status = 'updated';
-    this.itemPositions = this.itemPositions.map((item) =>
-      item._id === itemPosition._id ? itemPosition : item
-    );
-    sessionStorage.setItem(
-      'itemPositionsEdit',
-      JSON.stringify(this.itemPositions)
-    );
-    this.updateTotalAmount();
-    this.showItemPosModalEdit = false;
-    this.itemPosId = null;
-  }
-    
-
-  handleCategoryCreate(categoryName: string): void {
-    this.categoryService
-      .createCategory(categoryName)
-      .subscribe((newCategory) => {
-        this.categories.push(newCategory);
-        this.editForm.patchValue({ category: newCategory._id });
-        this.showCategoryModal = false;
-      });
-  }
-      */
 }

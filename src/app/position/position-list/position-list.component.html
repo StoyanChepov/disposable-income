@@ -25,8 +25,8 @@
       >
         <td>{{ position.title }}</td>
         <td>{{ position.amount }}</td>
-        <td>{{ position.date }}</td>
-        <td>{{ position.category }}</td>
+        <td>{{ position.date.toString()!.split("T")[0] }}</td>
+        <td>{{ position.category.name }}</td>
       </tr>
       }
     </tbody>

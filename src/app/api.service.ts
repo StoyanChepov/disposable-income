@@ -27,7 +27,7 @@ export class ApiService {
   }
 
   updatePosition(positionId: string, position: Position) {
-    return this.http.put(`/api/positions/${positionId}`, position);
+    return this.http.put(`/api/expenses/${positionId}`, position);
   }
 
   getCategories() {

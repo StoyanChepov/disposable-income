@@ -30,7 +30,9 @@
             formControlName="category"
           >
             @for(category of categories; track $index) {
-            <option [value]="category._id">{{ category?.name }}</option>
+            <option [value]="category._id" [selected]="$index === 0">
+              {{ category?.name }}
+            </option>
             }
           </select>
           <a
@@ -39,13 +41,14 @@
             class="button"
             id="create-category-button"
             type="button"
-            (click)="createCategoryHandler()"
+            (click)="openCategoryModal()"
           >
             + Add Category
           </a>
         </div>
       </div>
     </div>
+    <!--
     @if(itemPositions.length > 0) {
     <table id="allExpenses">
       <thead>
@@ -76,6 +79,7 @@
     >
       + Add a Line
     </a>
+    -->
 
     <div class="form-group">
       <label for="amount">Total</label>

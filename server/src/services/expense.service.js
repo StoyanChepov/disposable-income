@@ -285,7 +285,7 @@ async function update(id, data, userId) {
   existing.description = data.description;
   existing.amount = data.amount;
   existing.date = data.date;
-  existing.category = data.categoryId;
+  existing.category = data.category;
 
   await existing.save();
 

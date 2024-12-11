@@ -18,14 +18,29 @@
 
     <div class="form-group">
       <label for="category">Category</label>
-      <select formControlName="category" id="category" required>
-        @for(category of categories; track $index) {
-        <option [value]="category._id">{{ category.name }}</option>
-        }
-      </select>
-      <button type="button" (click)="showCategoryModal = true">
-        + Add Category
-      </button>
+      <div class="add-item">
+        <select
+          class="custom-select__control"
+          id="category"
+          formControlName="category"
+        >
+          @for(category of categories; track $index) {
+          <option [value]="category._id" [selected]="$index === 0">
+            {{ category?.name }}
+          </option>
+          }
+        </select>
+        <a
+          mat-raised-button
+          color="warn"
+          class="button"
+          id="create-category-button"
+          type="button"
+          (click)="openCategoryModal()"
+        >
+          + Add Category
+        </a>
+      </div>
     </div>
     <!--
     <table *ngIf="itemPositions.length > 0">

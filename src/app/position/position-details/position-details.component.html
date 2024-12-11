@@ -1,8 +1,8 @@
 <div class="expense-details">
   <h2>Title: {{ position?.title }}</h2>
   <p>Amount: {{ position?.amount }} $</p>
-  <p>Date: {{ position?.date }}</p>
-  <p>Category: {{ position?.category }}</p>
+  <p>Date: {{ position?.date?.toString()!.split("T")[0] }}</p>
+  <p>Category: {{ position?.category?.name }}</p>
 
   <!-- <table *ngIf="position.itemPositions?.length > 0" id="allExpenses">
     <thead>

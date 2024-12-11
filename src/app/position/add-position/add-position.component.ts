@@ -2,7 +2,6 @@
 import { Component, OnInit } from '@angular/core';
 import { RouterLink, Router, ActivatedRoute } from '@angular/router';
 import {
-  FormBuilder,
   FormControl,
   FormGroup,
   FormsModule,
@@ -11,11 +10,8 @@ import {
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ApiService } from '../../api.service';
-//import { PositionService } from 'src/app/services/position.service';
-//import { CategoryService } from 'src/app/services/category.service';
 import { Position } from '../../types/position';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { ConfirmCreateComponent } from '../../modals/confirm-create/confirm-create.component';
+import { CategoryDialogHandler } from '../../categories/category-handler';
 
 @Component({
   selector: 'app-add-position',
@@ -33,17 +29,16 @@ export class AddPositionComponent implements OnInit {
   showModal = false;
 
   constructor(
-    private fb: FormBuilder,
     private router: Router, //private positionService: PositionService, //private categoryService: CategoryService
     private route: ActivatedRoute,
     private apiService: ApiService,
-    private dialog: MatDialog
+    private categoryDialogHandler: CategoryDialogHandler
   ) {}
 
   form = new FormGroup({
     title: new FormControl('', [Validators.required]),
     date: new FormControl('', [Validators.required]),
-    category: new FormControl('', []),
+    category: new FormControl(null, []),
     amount: new FormControl('', [Validators.required]),
   });
 
@@ -70,8 +65,9 @@ export class AddPositionComponent implements OnInit {
     const values = {
       ...this.form.value,
       type: this.type,
-      category: '66f4076a695d90360b26c23e',
     };
+    console.log('Creating position:', values);
+
     this.apiService.addPosition(values).subscribe((position) => {
       console.log('Position created:', position);
 
@@ -87,22 +83,13 @@ export class AddPositionComponent implements OnInit {
   }
 
   openCategoryModal(): void {
-    this.showCategoryModal = true;
-  }
-
-  openItemPositionModal(): void {
-    this.showItemPosModal = true;
-  }
-
-  handleCategoryCreated(category: any): void {
-    this.showCategoryModal = false;
-    this.categories.unshift(category);
-    this.form.controls['category'].setValue(category._id);
-  }
-
-  handleItemPositionCreated(item: any): void {
-    this.showItemPosModal = false;
-    this.onAddItemPosition(item);
+    this.categoryDialogHandler.createCategoryHandler((newCategory) => {
+      if (newCategory) {
+        console.log('New category created:', newCategory);
+        this.categories.unshift(newCategory); // Add the new category to the list
+        this.form.controls['category'].setValue(newCategory._id); // Set it as selected
+      }
+    });
   }
 
   ngOnInit() {
@@ -112,6 +99,9 @@ export class AddPositionComponent implements OnInit {
         console.log('Categories:', categories);
 
         this.categories = categories;
+        if (this.categories.length > 0) {
+          this.form.get('category')?.setValue(this.categories[0]._id);
+        }
       });
 
       // Load item positions from sessionStorage
@@ -123,51 +113,5 @@ export class AddPositionComponent implements OnInit {
       // Calculate total amount
       this.updateAmount();
     });
-  }
-
-  private dialogRef: MatDialogRef<ConfirmCreateComponent> | null = null;
-  createCategoryHandler(): void {
-    if (this.dialogRef) {
-      console.log('A dialog is already open.');
-      return; // Exit the method to prevent opening another dialog
-    }
-    this.dialogRef = this.dialog.open(ConfirmCreateComponent, {
-      data: { object: 'category' },
-      width: '300px',
-      disableClose: true,
-    });
-
-    const mainContent = document.querySelector('app-root'); // Adjust selector to your main content
-    if (mainContent) {
-      mainContent.setAttribute('inert', 'true'); // Disable interaction
-    }
-
-    this.dialogRef.afterOpened().subscribe(() => {
-      console.log('Dialog opened and focus managed.');
-    });
-
-    // Handle the result of the dialog
-    this.dialogRef.afterClosed().subscribe((name) => {
-      if (mainContent) mainContent.removeAttribute('inert'); // Re-enable interaction
-      console.log('Result:', name);
-
-      if (name) {
-        console.log('Category added!');
-        this.apiService.createCategory(name).subscribe(() => {});
-      } else {
-        console.log('Delete cancelled.');
-      }
-
-      // Reset the dialog reference after it is closed
-      this.dialogRef = null;
-    });
-  }
-
-  handleCloseModal() {
-    this.showModal = false;
-  }
-
-  handleConfirmDelete() {
-    console.log('Confirm delete');
   }
 }
