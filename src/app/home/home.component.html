@@ -22,7 +22,11 @@
       <h3>Latest Expenses</h3>
     </div>
     @for(position of positions; track $index) {
-    <div class="expense">
+    <div
+      class="expense"
+      (click)="handleClick()"
+      (mouseenter)="handleMouseEnter(position?._id)"
+    >
       <h3>{{ position.title }}</h3>
       <p>Amount: {{ position.amount }} $</p>
       <p>Date: {{ position.date }}</p>

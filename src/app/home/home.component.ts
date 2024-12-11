@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { UserService } from '../user/user.service';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Position } from '../types/position';
@@ -11,8 +11,9 @@ import { ApiService } from '../api.service';
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
 })
-export class HomeComponent {
+export class HomeComponent  implements OnInit {
   positions: Position[] = [];
+  hoveredId: string | undefined = undefined;
   constructor(
     private userService: UserService,
     private router: Router,
@@ -29,5 +30,15 @@ export class HomeComponent {
       this.positions = positions;
       //this.isLoading = false;
     });
+  }
+
+  handleMouseEnter(id: string | undefined): void {
+    this.hoveredId = id;
+  }
+
+  handleClick(): void {
+    if (this.hoveredId !== null && this.hoveredId !== undefined) {
+      this.router.navigate([`/positions/${this.hoveredId}/details`]);
+    }
   }
 }
