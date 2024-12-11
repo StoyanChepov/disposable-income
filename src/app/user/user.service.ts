@@ -16,8 +16,7 @@ export class UserService {
   }
 
   constructor(private http: HttpClient) {
-    const lsUser = localStorage.getItem('auth');
-    this.user = lsUser ? JSON.parse(lsUser) : null;
+    this.user$.subscribe((user) => (this.user = user));
   }
 
   login(email: string, password: string) {
@@ -38,7 +37,14 @@ export class UserService {
 
   logout() {
     this.user = null;
-    localStorage.removeItem('auth');
-    return this.http.post('/api/logout', {});
+    return this.http
+      .get('/api/users/logout', {})
+      .pipe(tap((user) => this.user$$.next(null)));
+  }
+
+  get isAuthenticated() {
+    return this.http
+      .get<UserForAuth>('/api/users/profile')
+      .pipe(tap((user) => this.user$$.next(user)));
   }
 }

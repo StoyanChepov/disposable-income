@@ -23,6 +23,20 @@
   text-transform: uppercase;
   font-weight: 700;
   font-family: "Agency FB";
+  margin-bottom: 20px;
+}
+
+.welcome-message p {
+  color: black;
+  font-size: 200%;
+  text-shadow: none;
+  line-height: 1;
+  font-weight: 400;
+  text-align: center;
+  letter-spacing: normal;
+  word-spacing: normal;
+  font-weight: 400;
+  font-family: "Agency FB";
 }
 
 .expense {

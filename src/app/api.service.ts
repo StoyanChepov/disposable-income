@@ -10,17 +10,20 @@ export class ApiService {
   getPositions() {
     return this.http.get<Position[]>(`/api/expenses`);
   }
-
-  getPositionById(id: string) {
-    return this.http.get<Position>(`/api/positions/${id}`);
+  getLatestPositions(count: number) {
+    return this.http.get<Position[]>(`/api/expenses?pageSize=${count}`);
   }
 
-  addPosition(position: Position) {
-    return this.http.post('/api/positions', position);
+  getPositionById(id: string) {
+    return this.http.get<Position>(`/api/expenses/${id}`);
+  }
+
+  addPosition(position: any) {
+    return this.http.post('/api/expenses/create', position);
   }
 
   updatePosition(position: Position) {
-    return this.http.put(`/api/positions/${position.id}`, position);
+    return this.http.put(`/api/positions/${position._id}`, position);
   }
 
   deletePosition(id: string) {

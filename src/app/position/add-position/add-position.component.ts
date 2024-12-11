@@ -1,16 +1,19 @@
 // position-create.component.ts
 import { Component, OnInit } from '@angular/core';
-import { RouterLink, Router } from '@angular/router';
+import { RouterLink, Router, ActivatedRoute } from '@angular/router';
 import {
   FormBuilder,
+  FormControl,
   FormGroup,
   FormsModule,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { ApiService } from '../../api.service';
 //import { PositionService } from 'src/app/services/position.service';
 //import { CategoryService } from 'src/app/services/category.service';
+import { Position } from '../../types/position';
 
 @Component({
   selector: 'app-add-position',
@@ -20,40 +23,25 @@ import { CommonModule } from '@angular/common';
   styleUrl: './add-position.component.css',
 })
 export class AddPositionComponent implements OnInit {
-  form: FormGroup;
   categories: any[] = [];
   itemPositions: any[] = [];
   showCategoryModal = false;
   showItemPosModal = false;
-  type: string = '';
+  type: string | null = null;
 
   constructor(
     private fb: FormBuilder,
-    private router: Router //private positionService: PositionService, //private categoryService: CategoryService
-  ) {
-    this.form = this.fb.group({
-      title: ['', Validators.required],
-      date: ['', Validators.required],
-      category: ['', Validators.required],
-      amount: [{ value: '', disabled: true }],
-    });
-  }
+    private router: Router, //private positionService: PositionService, //private categoryService: CategoryService
+    private route: ActivatedRoute,
+    private apiService: ApiService
+  ) {}
 
-  ngOnInit(): void {
-    // Load categories
-    /* this.categoryService.getCategories().subscribe((categories) => {
-      this.categories = categories;
-    });*/
-
-    // Load item positions from sessionStorage
-    const cachedData = sessionStorage.getItem('itemPositions');
-    if (cachedData) {
-      this.itemPositions = JSON.parse(cachedData);
-    }
-
-    // Calculate total amount
-    this.updateAmount();
-  }
+  form = new FormGroup({
+    title: new FormControl('', [Validators.required]),
+    date: new FormControl('', [Validators.required]),
+    category: new FormControl('', []),
+    amount: new FormControl('', [Validators.required]),
+  });
 
   onAddItemPosition(item: any): void {
     this.itemPositions.push(item);
@@ -69,17 +57,21 @@ export class AddPositionComponent implements OnInit {
     this.form.controls['amount'].setValue(amount);
   }
 
-  onSubmit(): void {
-    if (this.form.invalid) return;
+  create() {
+    if (this.form.invalid) {
+      console.log('Invalid form');
+      return;
+    }
 
-    const values = { ...this.form.value, itemPositions: this.itemPositions };
-    /* this.positionService.createPosition(values).subscribe(
-      (positionId) => {
-        sessionStorage.removeItem('itemPositions');
-        this.router.navigate([`/positions/${positionId}/details`]);
-      },
-      (error) => console.error(error)
-    );*/
+    const values = {
+      ...this.form.value,
+      type: this.type,
+      category: '66f4076a695d90360b26c23e',
+    };
+    this.apiService.addPosition(values).subscribe((positionId) => {
+      sessionStorage.removeItem('itemPositions');
+      this.router.navigate([`/positions/${positionId}/details`]);
+    });
   }
 
   openCategoryModal(): void {
@@ -99,5 +91,24 @@ export class AddPositionComponent implements OnInit {
   handleItemPositionCreated(item: any): void {
     this.showItemPosModal = false;
     this.onAddItemPosition(item);
+  }
+
+  ngOnInit() {
+    this.route.queryParamMap.subscribe((params) => {
+      this.type = params.get('type');
+      // Load categories
+      /* this.categoryService.getCategories().subscribe((categories) => {
+      this.categories = categories;
+    });*/
+
+      // Load item positions from sessionStorage
+      const cachedData = sessionStorage.getItem('itemPositions');
+      if (cachedData) {
+        this.itemPositions = JSON.parse(cachedData);
+      }
+
+      // Calculate total amount
+      this.updateAmount();
+    });
   }
 }

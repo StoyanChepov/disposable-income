@@ -1,8 +1,31 @@
-<main>
-  @for (position of positions; track $index) {
-  <div class="position">
-    <h2>{{ position.title }}</h2>
-    <p>{{ position.amount }}</p>
+<section id="expense-list">
+  <div class="buttons">
+    <a
+      [routerLink]="['/positions/create']"
+      [queryParams]="{ type: type }"
+      class="button"
+    >
+      Add {{ type === "income" ? "Income" : "Expense" }}
+    </a>
   </div>
-  }
-</main>
+  <table id="allExpenses">
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Amount</th>
+        <th>Date</th>
+        <th>Category</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for(position of positions; track $index) {
+      <tr (click)="handleClick()" (mouseenter)="handleMouseEnter(position._id)">
+        <td>{{ position.title }}</td>
+        <td>{{ position.amount }}</td>
+        <td>{{ position.date }}</td>
+        <td>{{ position.category }}</td>
+      </tr>
+      }
+    </tbody>
+  </table>
+</section>

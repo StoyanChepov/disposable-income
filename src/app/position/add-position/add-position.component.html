@@ -1,6 +1,6 @@
 <div class="position-create">
   <h2>Create</h2>
-  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <form id="create" [formGroup]="form" (ngSubmit)="create()">
     <label for="title">Title</label>
     <input
       id="title"
@@ -10,53 +10,82 @@
     />
     <div class="expense-info">
       <div class="form-group">
-        <label for="date">Date</label>
-        <input id="date" formControlName="date" type="date" required />
+        <label class="expense-detail" for="date">Date</label>
+        <input
+          class="date"
+          id="date"
+          formControlName="date"
+          type="date"
+          required
+          title="Enter date"
+        />
       </div>
 
       <div class="form-group">
         <label for="category">Category</label>
-        <select id="category" formControlName="category" required>
-          <option *ngFor="let category of categories" [value]="category._id">
-            {{ category.name }}
-          </option>
-        </select>
-        <button type="button" (click)="openCategoryModal()">
-          + Add Category
-        </button>
+        <div class="add-item">
+          <select
+            class="custom-select__control"
+            id="category"
+            formControlName="category"
+          >
+            <option *ngFor="let category of categories" [value]="category._id">
+              {{ category.name }}
+            </option>
+          </select>
+          <a
+            class="button"
+            id="create-category-button"
+            type="button"
+            (click)="openCategoryModal()"
+          >
+            + Add Category
+          </a>
+        </div>
       </div>
     </div>
-    <div *ngIf="itemPositions.length > 0">
-      <table>
-        <thead>
-          <tr>
-            <th>Item</th>
-            <th>Quantity</th>
-            <th>Price</th>
-            <th>Amount</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let item of itemPositions">
-            <td>{{ item.item.name }}</td>
-            <td>{{ item.quantity }}</td>
-            <td>{{ item.price }}</td>
-            <td>{{ item.amount }}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+    @if(itemPositions.length > 0) {
+    <table id="allExpenses">
+      <thead>
+        <tr>
+          <th>Item</th>
+          <th>Quantity</th>
+          <th>Price</th>
+          <th>Amount</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of itemPositions">
+          <td>{{ item.item.name }}</td>
+          <td>{{ item.quantity }}</td>
+          <td>{{ item.price }}</td>
+          <td>{{ item.amount }}</td>
+        </tr>
+      </tbody>
+    </table>
+    }
 
-    <button type="button" (click)="openItemPositionModal()">
+    <a
+      class="button"
+      id="create-category-button"
+      type="button"
+      (click)="openItemPositionModal()"
+      title="Add a line"
+    >
       + Add a Line
-    </button>
+    </a>
 
     <div class="form-group">
       <label for="amount">Total</label>
-      <input id="amount" formControlName="amount" readonly />
+      <input
+        type="number"
+        id="amount"
+        formControlName="amount"
+       
+      />
     </div>
     <div class="buttons">
-      <button class="button" type="submit" [disabled]="form.invalid">
+      <button class="button" type="submit">
         Create
       </button>
     </div>

@@ -1,7 +1,6 @@
 export interface Position {
-  id: string;
+  _id: string;
   title: string;
-  description: string;
   amount: number;
   date: Date;
   category: string;

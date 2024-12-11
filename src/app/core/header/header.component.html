@@ -5,8 +5,10 @@
   <nav>
     @if(isLoggedIn) {
     <div id="user">
-      <a routerLink="/positions?type=income">Profits</a>
-      <a routerLink="/positions?type=expense">Expenses</a>
+      <a routerLink="/positions" [queryParams]="{ type: 'income' }">Profits</a>
+      <a routerLink="/positions" [queryParams]="{ type: 'expense' }"
+        >Expenses</a
+      >
       <a routerLink="/monitor">Data Analysis</a>
       <a (click)="logout()">Logout</a>
     </div>

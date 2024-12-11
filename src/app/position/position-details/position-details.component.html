@@ -1,1 +1,69 @@
-<p>position-details works!</p>
+<div class="expense-details">
+  <h2>Title: {{ position?.title }}</h2>
+  <p>Amount: {{ position?.amount }} $</p>
+  <p>Date: {{ position?.date }}</p>
+  <p>Category: {{ position?.category }}</p>
+
+  <!-- <table *ngIf="position.itemPositions?.length > 0" id="allExpenses">
+    <thead>
+      <tr>
+        <th>Item</th>
+        <th>Quantity</th>
+        <th>Price</th>
+        <th>Amount</th>
+      </tr>
+    </thead>
+    <tbody>
+        <ng-container
+    
+    </ng-container>     *ngFor="let itempos of position.itemPositions; let index = index">
+        <app-line-item [itempos]="itempos"></app-line-item>
+      </ng-container>
+      
+    </tbody>
+  </table>
+-->
+  <div *ngIf="isOwner" class="buttons">
+    <a
+      [routerLink]="['/expenses', position?.id, 'edit']"
+      class="button"
+      id="edit-button"
+    >
+      Edit
+    </a>
+    <a (click)="expenseDeleteHandler()" class="button" id="delete-button">
+      Delete
+    </a>
+  </div>
+  <!--
+  <app-confirm-delete
+    *ngIf="showModal"
+    [isOpen]="showModal"
+    (onRequestClose)="handleCloseModal()"
+    (onConfirm)="handleConfirmDelete()"
+  ></app-confirm-delete>
+  <div *ngIf="attachments.length > 0" class="attachments">
+    <h2>Attachments</h2>
+    <ul class="img-container">
+      <li
+        *ngFor="let doc of attachments"
+        class="img-item"
+        [@listAnimation]="doc._id"
+      >
+        <img
+          class="mot-img"
+          [src]="doc.url"
+          alt="uploaded pic"
+          [@fadeAnimation]
+        />
+      </li>
+    </ul>
+  </div>
+  -->
+  <!--
+    <article *ngIf="isAuthenticated" class="add-attachment">
+      <h2>Attachment file</h2>
+      <app-upload-form (setAttachments)="setAttachments($event)"></app-upload-form>
+    </article>
+    -->
+</div>
