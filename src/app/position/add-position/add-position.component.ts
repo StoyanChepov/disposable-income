@@ -68,9 +68,17 @@ export class AddPositionComponent implements OnInit {
       type: this.type,
       category: '66f4076a695d90360b26c23e',
     };
-    this.apiService.addPosition(values).subscribe((positionId) => {
-      sessionStorage.removeItem('itemPositions');
-      this.router.navigate([`/positions/${positionId}/details`]);
+    this.apiService.addPosition(values).subscribe((position) => {
+      console.log('Position created:', position);
+
+      const typedPosition = position as Position; // Specify the expected type
+      if (typedPosition && typedPosition._id) {
+        sessionStorage.removeItem('itemPositions');
+
+        this.router.navigate([`/positions/${typedPosition._id}/details`]);
+      } else {
+        console.error('Position or position._id is undefined.');
+      }
     });
   }
 

@@ -6,3 +6,13 @@
 @import "expenses.css";
 @import "navigation.css";
 @import "modal-styles.css";
+
+.cdk-overlay-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1000; /* Ensure it's above other elements */
+  }
+  

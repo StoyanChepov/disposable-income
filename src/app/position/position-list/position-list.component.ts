@@ -15,7 +15,7 @@ export class PositionListComponent implements OnInit {
   positions: Position[] = [];
   isLoading = true;
   type: string | null = null;
-  hoveredId: string | null = null;
+  hoveredId: string | undefined = undefined;
 
   constructor(
     private apiService: ApiService,
@@ -39,7 +39,7 @@ export class PositionListComponent implements OnInit {
     });
   }
 
-  handleMouseEnter(id: string): void {
+  handleMouseEnter(id: string | undefined): void {
     this.hoveredId = id;
   }
 

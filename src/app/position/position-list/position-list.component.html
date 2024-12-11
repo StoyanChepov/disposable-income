@@ -19,7 +19,10 @@
     </thead>
     <tbody>
       @for(position of positions; track $index) {
-      <tr (click)="handleClick()" (mouseenter)="handleMouseEnter(position._id)">
+      <tr
+        (click)="handleClick()"
+        (mouseenter)="handleMouseEnter(position?._id)"
+      >
         <td>{{ position.title }}</td>
         <td>{{ position.amount }}</td>
         <td>{{ position.date }}</td>

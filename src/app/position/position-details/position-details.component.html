@@ -25,23 +25,24 @@
 -->
   <div *ngIf="isOwner" class="buttons">
     <a
-      [routerLink]="['/expenses', position?.id, 'edit']"
+      [routerLink]="['/expenses', position?._id, 'edit']"
       class="button"
       id="edit-button"
     >
       Edit
     </a>
-    <a (click)="expenseDeleteHandler()" class="button" id="delete-button">
+    <button
+      mat-raised-button
+      color="warn"
+      (click)="expenseDeleteHandler()"
+      class="button"
+      id="delete-button"
+    >
       Delete
-    </a>
+    </button>
   </div>
   <!--
-  <app-confirm-delete
-    *ngIf="showModal"
-    [isOpen]="showModal"
-    (onRequestClose)="handleCloseModal()"
-    (onConfirm)="handleConfirmDelete()"
-  ></app-confirm-delete>
+
   <div *ngIf="attachments.length > 0" class="attachments">
     <h2>Attachments</h2>
     <ul class="img-container">

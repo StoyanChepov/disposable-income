@@ -18,15 +18,15 @@ export class ApiService {
     return this.http.get<Position>(`/api/expenses/${id}`);
   }
 
+  removePosition(id: string) {
+    return this.http.delete(`/api/expenses/${id}`);
+  }
+
   addPosition(position: any) {
     return this.http.post('/api/expenses/create', position);
   }
 
   updatePosition(position: Position) {
     return this.http.put(`/api/positions/${position._id}`, position);
-  }
-
-  deletePosition(id: string) {
-    return this.http.delete(`/api/positions/${id}`);
   }
 }
