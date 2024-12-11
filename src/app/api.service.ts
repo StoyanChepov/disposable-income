@@ -26,7 +26,23 @@ export class ApiService {
     return this.http.post('/api/expenses/create', position);
   }
 
-  updatePosition(position: Position) {
-    return this.http.put(`/api/positions/${position._id}`, position);
+  updatePosition(positionId: string, position: Position) {
+    return this.http.put(`/api/positions/${positionId}`, position);
+  }
+
+  getCategories() {
+    return this.http.get<any[]>(`/api/categories`);
+  }
+
+  createCategory(name: string) {
+    return this.http.post(`/api/categories/create`, { name });
+  }
+
+  getAllItems() {
+    return this.http.get<any[]>(`/api/items`);
+  }
+
+  getAllUnits() {
+    return this.http.get<any[]>(`/api/units`);
   }
 }

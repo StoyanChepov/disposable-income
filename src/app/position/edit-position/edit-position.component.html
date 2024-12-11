@@ -1,1 +1,73 @@
-<p>edit-position works!</p>
+<div class="edit-position">
+  <h2>Edit Expense</h2>
+
+  <form [formGroup]="editForm" (ngSubmit)="onSubmit()">
+    <label for="title">Title</label>
+    <input
+      formControlName="title"
+      id="title"
+      type="text"
+      placeholder="Enter title"
+      required
+    />
+
+    <div class="form-group">
+      <label for="date">Date</label>
+      <input formControlName="date" id="date" type="date" required />
+    </div>
+
+    <div class="form-group">
+      <label for="category">Category</label>
+      <select formControlName="category" id="category" required>
+        @for(category of categories; track $index) {
+        <option [value]="category._id">{{ category.name }}</option>
+        }
+      </select>
+      <button type="button" (click)="showCategoryModal = true">
+        + Add Category
+      </button>
+    </div>
+    <!--
+    <table *ngIf="itemPositions.length > 0">
+      <thead>
+        <tr>
+          <th>Item</th>
+          <th>Quantity</th>
+          <th>Price</th>
+          <th>Amount</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of itemPositions">
+          <td>{{ item.itemName }}</td>
+          <td>{{ item.quantity }}</td>
+          <td>{{ item.price }}</td>
+          <td>{{ item.quantity * item.price }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <button type="button" (click)="showItemPosModal = true">
+      + Add Line Item
+    </button>
+-->
+    <label for="amount">Total Amount</label>
+    <input formControlName="amount" id="amount" type="number" />
+
+    <button type="submit">Save</button>
+  </form>
+
+  <!-- Modals for adding/editing line items and categories 
+  <app-item-position-create
+    *ngIf="showItemPosModal"
+    (close)="showItemPosModal = false"
+    (confirm)="handleItemPosCreate($event)"
+  ></app-item-position-create>
+
+  <app-item-position-edit
+    *ngIf="showItemPosModalEdit"
+    [itemId]="itemPosId"
+    (close)="showItemPosModalEdit = false"
+    (confirm)="handleItemPosEdit($event)"
+  ></app-item-position-edit>
+--></div>

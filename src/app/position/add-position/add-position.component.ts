@@ -14,6 +14,8 @@ import { ApiService } from '../../api.service';
 //import { PositionService } from 'src/app/services/position.service';
 //import { CategoryService } from 'src/app/services/category.service';
 import { Position } from '../../types/position';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { ConfirmCreateComponent } from '../../modals/confirm-create/confirm-create.component';
 
 @Component({
   selector: 'app-add-position',
@@ -28,12 +30,14 @@ export class AddPositionComponent implements OnInit {
   showCategoryModal = false;
   showItemPosModal = false;
   type: string | null = null;
+  showModal = false;
 
   constructor(
     private fb: FormBuilder,
     private router: Router, //private positionService: PositionService, //private categoryService: CategoryService
     private route: ActivatedRoute,
-    private apiService: ApiService
+    private apiService: ApiService,
+    private dialog: MatDialog
   ) {}
 
   form = new FormGroup({
@@ -104,10 +108,11 @@ export class AddPositionComponent implements OnInit {
   ngOnInit() {
     this.route.queryParamMap.subscribe((params) => {
       this.type = params.get('type');
-      // Load categories
-      /* this.categoryService.getCategories().subscribe((categories) => {
-      this.categories = categories;
-    });*/
+      this.apiService.getCategories().subscribe((categories) => {
+        console.log('Categories:', categories);
+
+        this.categories = categories;
+      });
 
       // Load item positions from sessionStorage
       const cachedData = sessionStorage.getItem('itemPositions');
@@ -118,5 +123,51 @@ export class AddPositionComponent implements OnInit {
       // Calculate total amount
       this.updateAmount();
     });
+  }
+
+  private dialogRef: MatDialogRef<ConfirmCreateComponent> | null = null;
+  createCategoryHandler(): void {
+    if (this.dialogRef) {
+      console.log('A dialog is already open.');
+      return; // Exit the method to prevent opening another dialog
+    }
+    this.dialogRef = this.dialog.open(ConfirmCreateComponent, {
+      data: { object: 'category' },
+      width: '300px',
+      disableClose: true,
+    });
+
+    const mainContent = document.querySelector('app-root'); // Adjust selector to your main content
+    if (mainContent) {
+      mainContent.setAttribute('inert', 'true'); // Disable interaction
+    }
+
+    this.dialogRef.afterOpened().subscribe(() => {
+      console.log('Dialog opened and focus managed.');
+    });
+
+    // Handle the result of the dialog
+    this.dialogRef.afterClosed().subscribe((name) => {
+      if (mainContent) mainContent.removeAttribute('inert'); // Re-enable interaction
+      console.log('Result:', name);
+
+      if (name) {
+        console.log('Category added!');
+        this.apiService.createCategory(name).subscribe(() => {});
+      } else {
+        console.log('Delete cancelled.');
+      }
+
+      // Reset the dialog reference after it is closed
+      this.dialogRef = null;
+    });
+  }
+
+  handleCloseModal() {
+    this.showModal = false;
+  }
+
+  handleConfirmDelete() {
+    console.log('Confirm delete');
   }
 }
