@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Position } from './types/position';
+import { ItemPosition } from './types/itemPosition';
 @Injectable({
   providedIn: 'root',
 })
@@ -44,5 +45,9 @@ export class ApiService {
 
   getAllUnits() {
     return this.http.get<any[]>(`/api/units`);
+  }
+
+  createItemPosition(itemPosition: ItemPosition) {
+    return this.http.post(`/api/expenses/create/line`, itemPosition);
   }
 }

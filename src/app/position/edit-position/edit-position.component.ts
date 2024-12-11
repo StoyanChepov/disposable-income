@@ -9,7 +9,7 @@ import {
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { ApiService } from '../../api.service';
 import { Position } from '../../types/position';
-import { CategoryDialogHandler } from '../../categories/category-handler';
+import { CategoryDialogHandler } from '../../categories/create-category-handler';
 
 @Component({
   selector: 'app-edit-position',

@@ -11,7 +11,8 @@ import {
 import { CommonModule } from '@angular/common';
 import { ApiService } from '../../api.service';
 import { Position } from '../../types/position';
-import { CategoryDialogHandler } from '../../categories/category-handler';
+import { CategoryDialogHandler } from '../../categories/create-category-handler';
+import { ItemPosDialogHandler } from '../../item-positions/create-item-pos-handler';
 
 @Component({
   selector: 'app-add-position',
@@ -32,7 +33,8 @@ export class AddPositionComponent implements OnInit {
     private router: Router, //private positionService: PositionService, //private categoryService: CategoryService
     private route: ActivatedRoute,
     private apiService: ApiService,
-    private categoryDialogHandler: CategoryDialogHandler
+    private categoryDialogHandler: CategoryDialogHandler,
+    private createItemPosHandler: ItemPosDialogHandler
   ) {}
 
   form = new FormGroup({
@@ -41,12 +43,6 @@ export class AddPositionComponent implements OnInit {
     category: new FormControl(null, []),
     amount: new FormControl('', [Validators.required]),
   });
-
-  onAddItemPosition(item: any): void {
-    this.itemPositions.push(item);
-    sessionStorage.setItem('itemPositions', JSON.stringify(this.itemPositions));
-    this.updateAmount();
-  }
 
   updateAmount(): void {
     const amount = this.itemPositions.reduce(
@@ -90,6 +86,18 @@ export class AddPositionComponent implements OnInit {
         this.form.controls['category'].setValue(newCategory._id); // Set it as selected
       }
     });
+  }
+
+  openItemPositionModal(): void {
+    this.createItemPosHandler.createItemPosHandler((newItemPos) => {
+      if (newItemPos) {
+        console.log('New item position created:', newItemPos);
+        this.itemPositions.push(newItemPos);
+        sessionStorage.setItem('itemPositions', JSON.stringify(this.itemPositions));
+        this.updateAmount();
+      }
+    });
+
   }
 
   ngOnInit() {
