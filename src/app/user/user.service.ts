@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, tap } from 'rxjs';
+import { BehaviorSubject, tap, throwError } from 'rxjs';
 import { User, UserForAuth } from '../types/user';
+import { catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -22,7 +23,13 @@ export class UserService {
   login(email: string, password: string) {
     return this.http
       .post<UserForAuth>('/api/users/login', { email, password })
-      .pipe(tap((user) => this.user$$.next(user)));
+      .pipe(
+        tap((user) => this.user$$.next(user)),
+        catchError((error) => {
+          console.error('Login failed:', error.message || error);
+          return throwError(() => new Error('Login failed. Please try again.'));
+        })
+      );
   }
 
   register(email: string, password: string, rePassword: string) {
@@ -32,7 +39,15 @@ export class UserService {
         password,
         repass: rePassword,
       })
-      .pipe(tap((user) => this.user$$.next(user)));
+      .pipe(
+        tap((user) => this.user$$.next(user)),
+        catchError((error) => {
+          console.error('Registration failed:', error.message || error);
+          return throwError(
+            () => new Error('Registration failed. Please try again.')
+          );
+        })
+      );
   }
 
   logout() {

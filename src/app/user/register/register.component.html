@@ -3,6 +3,9 @@
     <fieldset>
       <h2>Registration Form</h2>
 
+      @if(errorMessage) {
+      <p class="error">{{ errorMessage }}</p>
+      }
       <!-- email -->
       <p class="field field-icon">
         <label for="email"
@@ -26,7 +29,7 @@
         @if(inputEmail?.errors?.['required']) {
         <p class="error">Email is required!</p>
         } @if(inputEmail?.errors?.['emailValidator']) {
-        <p class="error">Email is not valid!</p>
+        <p class="error">Email is not valid! Should end with {{ suffixes | }}</p>
         }
         <!--<p class="error" *ngIf="inputEmail?.errors?.['required']">
           Email is required!

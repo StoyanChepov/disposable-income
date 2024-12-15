@@ -11,7 +11,7 @@ import { ApiService } from '../api.service';
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
 })
-export class HomeComponent  implements OnInit {
+export class HomeComponent implements OnInit {
   positions: Position[] = [];
   hoveredId: string | undefined = undefined;
   constructor(
@@ -24,12 +24,14 @@ export class HomeComponent  implements OnInit {
     return this.userService.isLogged;
   }
   ngOnInit(): void {
-    this.apiService.getLatestPositions(3).subscribe((positions) => {
-      console.log('All positions:', positions);
+    if (this.isLoggedIn) {
+      this.apiService.getLatestPositions(3).subscribe((positions) => {
+        console.log('All positions:', positions);
 
-      this.positions = positions;
-      //this.isLoading = false;
-    });
+        this.positions = positions;
+        //this.isLoading = false;
+      });
+    }
   }
 
   handleMouseEnter(id: string | undefined): void {

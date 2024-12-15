@@ -12,6 +12,8 @@ async function createDatabase() {
   await configDatabase();
   configExpress(app);
   configRoutes(app);
+  // Register error-handling middleware
+  // app.use(errorHandler);
 
   console.log("Database connected!");
   const PORT = process.env.PORT || 3000;

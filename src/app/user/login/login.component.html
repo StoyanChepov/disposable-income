@@ -2,7 +2,9 @@
   <form class="login" [formGroup]="form" (ngSubmit)="login()">
     <fieldset>
       <h2>Login Form</h2>
-
+      @if(errorMessage) {
+      <p class="error">{{ errorMessage }}</p>
+      }
       <p class="field field-icon">
         <label for="email"
           ><span><i class="fas fa-envelope"></i></span>Email:</label
@@ -20,9 +22,9 @@
       @if(form.get('email')?.touched) {
       <div>
         @if(form.get('email')?.errors?.['required']) {
-        <p>Email is required</p>
+        <p class="error">Email is required</p>
         } @if(form.get('email')?.errors?.['emailValidator']) {
-        <p>Email is not valid</p>
+        <p class="error">Email is not valid</p>
         }
       </div>
       }
@@ -43,7 +45,7 @@
       @if(form.get('password')?.touched) {
       <div>
         @if(form.get('password')?.errors?.['required']) {
-        <p>Password is required</p>
+        <p class="error">Password is required</p>
         }
       </div>
       }

@@ -5,9 +5,10 @@ const { createToken, verifyToken } = require("../services/jwt.service");
 const { getRecent } = require("../services/expense.service");
 const { isGuest } = require("../middlewares/guards");
 const { isUser } = require("../middlewares/guards");
-const { parseError } = require("../util");
+const { parseError } = require("../utils/util");
 const { validationResult, body } = require("express-validator");
 const auth = require("../middlewares/auth");
+
 //TODO: Add home controller
 const userRouter = Router();
 
@@ -26,40 +27,41 @@ userRouter.post(
     .isLength({ min: 4 })
     .withMessage("Password must be at least 4 characters long!"),
   body("repass")
-    .custom((value, { req }) => value == req.body.password)
+    .custom((value, { req }) => value === req.body.password)
     .withMessage("Passwords don't match!"),
   async (req, res) => {
     const { email, password, repass } = req.body;
-    console.log("My body", req.body);
+
+    // Validate input fields using express-validator
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).send({
+        errors: errors.array().map((e) => e.msg), // Return human-readable error messages
+        data: { email },
+      });
+    }
 
     try {
-      const validation = validationResult(req);
-      if (validation.errors.length) {
-        throw validation.errors;
-      }
-    } catch (error) {
-      console.log("Validation error", error);
-      res.status(400).send({ errors: parseError(error).errors });
-      return;
-    }
-    try {
       const result = await register(email, password);
-      const token = createToken(result);
+      const token = createToken(result); // Generate JWT token
+
+      // Set the token as a secure cookie
       res.cookie("token", token);
-      const response = {
+
+      // Send success response
+      res.status(201).send({
         email: result.email,
         _id: result._id,
         accessToken: token,
-      };
-      res.send(response).status(200);
+      });
     } catch (error) {
-      console.log(error);
-      res
-        .send({
-          errors: parseError(error),
-          data: { email },
-        })
-        .status(400);
+      console.error("Registration error:", error);
+
+      // Send error response
+      res.status(400).send({
+        errors: parseError(error).errors || ["Error during registration"],
+        data: { email },
+      });
     }
   }
 );
@@ -67,30 +69,42 @@ userRouter.post(
 userRouter.post(
   "/users/login",
   isGuest(),
-  body("email").trim(),
-  body("password").trim(),
+  body("email").trim().isEmail().withMessage("Invalid email format"),
+  body("password").trim().notEmpty().withMessage("Password is required"),
   async (req, res) => {
     const { email, password } = req.body;
+
+    // Check for validation errors
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).send({
+        errors: errors.array().map((e) => e.msg),
+        data: { email },
+      });
+    }
+
     try {
-      const result = await login(email, password);
-      const token = createToken(result);
-      console.log("result", result);
-      req.user = result;
+      const result = await login(email, password); // Call the login service
+      const token = createToken(result); // Generate JWT token
+
+      // Set the token as a cookie
       res.cookie("token", token);
-      const response = {
+
+      // Send success response
+      res.status(200).send({
         email: result.email,
         _id: result._id,
         accessToken: token,
-      };
-      res.send(response).status(200);
+      });
+      console.log("Login successful:", result.email);
     } catch (error) {
-      console.log(error);
-      res
-        .send({
-          errors: parseError(error).errors,
-          data: { email },
-        })
-        .status(400);
+      console.error("Login error:", error);
+
+      // Send error response
+      res.status(400).send({
+        errors: parseError(error).errors || ["Invalid email or password"],
+        data: { email },
+      });
     }
   }
 );

@@ -1,7 +1,7 @@
 const { Router } = require("express");
 const { isUser } = require("../middlewares/guards");
 const { validationResult, body } = require("express-validator");
-const { parseError } = require("../util");
+const { parseError } = require("../utils/util");
 const {
   create,
   getById,
