@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, ViewEncapsulation } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import {
   FormBuilder,
@@ -10,9 +10,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { provideAnimations } from '@angular/platform-browser/animations';
-import { Observable } from 'rxjs';
 import { ApiService } from '../../api.service';
 import { MatSelectModule } from '@angular/material/select';
 
@@ -85,16 +82,15 @@ import { MatSelectModule } from '@angular/material/select';
     </form>
   `,
   standalone: true,
+  encapsulation: ViewEncapsulation.ShadowDom,
   imports: [
     MatFormFieldModule,
     MatInputModule,
     FormsModule,
     ReactiveFormsModule,
     CommonModule,
-    NoopAnimationsModule,
     MatSelectModule,
   ],
-  providers: [provideAnimations()],
 })
 export class ItemPositionCreateComponent {
   form: FormGroup;

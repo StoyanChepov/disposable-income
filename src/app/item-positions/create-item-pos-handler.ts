@@ -19,7 +19,6 @@ export class ItemPosDialogHandler {
 
     this.dialogRef = this.dialog.open(ItemPositionCreateComponent, {
       data: { object: 'category' },
-      width: '300px',
       disableClose: true,
     });
 
