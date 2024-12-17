@@ -1,38 +1,45 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, tap, throwError } from 'rxjs';
-import { User, UserForAuth } from '../types/user';
-import { catchError } from 'rxjs/operators';
+import { BehaviorSubject, Observable, throwError } from 'rxjs';
+import { UserForAuth } from '../types/user';
+import { tap, catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
-  private user$$ = new BehaviorSubject<UserForAuth | null>(null);
-  private user$ = this.user$$.asObservable();
+  private user$$ = new BehaviorSubject<UserForAuth | null>(this.getStoredUser());
+  user$ = this.user$$.asObservable();
 
-  user: UserForAuth | null = null;
+  constructor(private http: HttpClient) {}
+
+  /**
+   * Getter for logged-in status
+   */
   get isLogged(): boolean {
-    return !!this.user;
+    return !!this.user$$.value;
   }
 
-  constructor(private http: HttpClient) {
-    this.user$.subscribe((user) => (this.user = user));
-  }
-
-  login(email: string, password: string) {
+  /**
+   * Login method
+   */
+  login(email: string, password: string): Observable<UserForAuth> {
     return this.http
       .post<UserForAuth>('/api/users/login', { email, password })
       .pipe(
-        tap((user) => this.user$$.next(user)),
-        catchError((error) => {
-          console.error('Login failed:', error.message || error);
-          return throwError(() => new Error('Login failed. Please try again.'));
-        })
+        tap((user) => this.setUser(user)),
+        catchError((error) => this.handleError('Login failed', error))
       );
   }
 
-  register(email: string, password: string, rePassword: string) {
+  /**
+   * Register method
+   */
+  register(
+    email: string,
+    password: string,
+    rePassword: string
+  ): Observable<UserForAuth> {
     return this.http
       .post<UserForAuth>('/api/users/register', {
         email,
@@ -40,26 +47,64 @@ export class UserService {
         repass: rePassword,
       })
       .pipe(
-        tap((user) => this.user$$.next(user)),
-        catchError((error) => {
-          console.error('Registration failed:', error.message || error);
-          return throwError(
-            () => new Error('Registration failed. Please try again.')
-          );
-        })
+        tap((user) => this.setUser(user)),
+        catchError((error) => this.handleError('Registration failed', error))
       );
   }
 
-  logout() {
-    this.user = null;
-    return this.http
-      .get('/api/users/logout', {})
-      .pipe(tap((user) => this.user$$.next(null)));
+  /**
+   * Logout method
+   */
+  logout(): Observable<void> {
+    return this.http.get<void>('/api/users/logout').pipe(
+      tap(() => this.clearUser()),
+      catchError((error) => this.handleError('Logout failed', error))
+    );
   }
 
-  get isAuthenticated() {
-    return this.http
-      .get<UserForAuth>('/api/users/profile')
-      .pipe(tap((user) => this.user$$.next(user)));
+  /**
+   * Check if the user is authenticated
+   */
+  isAuthenticated(): Observable<UserForAuth> {
+    return this.http.get<UserForAuth>('/api/users/profile').pipe(
+      tap((user) => this.setUser(user)),
+      catchError((error) => this.handleError('User is not authenticated', error))
+    );
+  }
+
+  /**
+   * Set user state and persist to localStorage
+   */
+  private setUser(user: UserForAuth | null): void {
+    this.user$$.next(user);
+    if (user) {
+      localStorage.setItem('user', JSON.stringify(user));
+    } else {
+      localStorage.removeItem('user');
+    }
+  }
+
+  /**
+   * Retrieve user state from localStorage
+   */
+  private getStoredUser(): UserForAuth | null {
+    const storedUser = localStorage.getItem('user');
+    return storedUser ? JSON.parse(storedUser) : null;
+  }
+
+  /**
+   * Clear user state
+   */
+  private clearUser(): void {
+    this.user$$.next(null);
+    localStorage.removeItem('user');
+  }
+
+  /**
+   * Handle HTTP errors
+   */
+  private handleError(message: string, error: any) {
+    console.error(`${message}:`, error.message || error);
+    return throwError(() => new Error(`${message}. Please try again.`));
   }
 }

@@ -17,7 +17,6 @@ export class HomeComponent implements OnInit {
   constructor(
     private userService: UserService,
     private router: Router,
-    private route: ActivatedRoute,
     private apiService: ApiService
   ) {}
   get isLoggedIn(): boolean {
