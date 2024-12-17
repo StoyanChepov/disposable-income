@@ -13,11 +13,20 @@ import { ApiService } from '../../api.service';
 import { Position } from '../../types/position';
 import { CategoryDialogHandler } from '../../categories/create-category-handler';
 import { ItemPosDialogHandler } from '../../item-positions/create-item-pos-handler';
+import { CurrencyPipe, DatePipe, TitleCasePipe } from '@angular/common';
 
 @Component({
   selector: 'app-add-position',
   standalone: true,
-  imports: [RouterLink, FormsModule, ReactiveFormsModule, CommonModule],
+  imports: [
+    RouterLink,
+    FormsModule,
+    ReactiveFormsModule,
+    CommonModule,
+    CurrencyPipe,
+    DatePipe,
+    TitleCasePipe,
+  ],
   templateUrl: './add-position.component.html',
   styleUrl: './add-position.component.css',
 })
@@ -93,11 +102,13 @@ export class AddPositionComponent implements OnInit {
       if (newItemPos) {
         console.log('New item position created:', newItemPos);
         this.itemPositions.push(newItemPos);
-        sessionStorage.setItem('itemPositions', JSON.stringify(this.itemPositions));
+        sessionStorage.setItem(
+          'itemPositions',
+          JSON.stringify(this.itemPositions)
+        );
         this.updateAmount();
       }
     });
-
   }
 
   ngOnInit() {

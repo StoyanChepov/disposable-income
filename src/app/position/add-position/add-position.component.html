@@ -1,5 +1,5 @@
 <div class="position-create">
-  <h2>Create</h2>
+  <h2>Create {{ type | titlecase }}</h2>
   <form id="create" [formGroup]="form" (ngSubmit)="create()">
     <label for="title">Title</label>
     <input
@@ -63,7 +63,7 @@
         <tr *ngFor="let item of itemPositions">
           <td>{{ item.item.name }}</td>
           <td>{{ item.quantity }}</td>
-          <td>{{ item.price }}</td>
+          <td>{{ item.price | currency}}</td>
           <td>{{ item.amount }}</td>
         </tr>
       </tbody>
