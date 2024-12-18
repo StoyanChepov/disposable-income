@@ -11,6 +11,10 @@ export class ItemPosDialogHandler {
 
   constructor(private dialog: MatDialog, private apiService: ApiService) {}
 
+  saveToCache = (value: any) => {
+    sessionStorage.setItem('itemPositions', JSON.stringify(value));
+  };
+
   createItemPosHandler(handleItemPosCreated: (itemPos: any) => void): void {
     if (this.dialogRef) {
       console.log('A dialog is already open.');
@@ -31,16 +35,12 @@ export class ItemPosDialogHandler {
       console.log('Dialog opened and focus managed.');
     });
 
-    this.dialogRef.afterClosed().subscribe((name) => {
+    this.dialogRef.afterClosed().subscribe((res) => {
       if (mainContent) mainContent.removeAttribute('inert'); // Re-enable interaction
-      console.log('Result:', name);
-
-      if (name) {
+      console.log('Result:', res);
+      if (res) {
         console.log('ItemPos added!');
-        this.apiService.createItemPosition(name).subscribe((itemPos) => {
-          console.log('ItemPos created:', itemPos);
-          handleItemPosCreated(itemPos);
-        });
+        handleItemPosCreated(res);
       } else {
         console.log('ItemPos creation cancelled.');
       }

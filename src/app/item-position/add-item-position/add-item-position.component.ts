@@ -1,4 +1,4 @@
-import { Component, Inject, ViewEncapsulation } from '@angular/core';
+import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import {
   FormBuilder,
@@ -19,22 +19,25 @@ import { ItemDialogHandler } from './create-item-handler';
   styleUrl: './add-item-position.component.css',
   standalone: true,
   //encapsulation: ViewEncapsulation.ShadowDom,
-  imports: [  FormsModule,
-    ReactiveFormsModule,
-    CommonModule,],
+  imports: [FormsModule, ReactiveFormsModule, CommonModule],
 })
-
-export class ItemPositionCreateComponent {
+export class ItemPositionCreateComponent implements OnInit {
   items: any[] = [];
   units: any[] = [];
 
   form = new FormGroup({
-    item: new FormControl(['', Validators.required]),
-    price: new FormControl([0, [Validators.required, Validators.min(0)]]),
-    quantity: new FormControl([0, [Validators.required, Validators.min(0)]]),
-    amount: new FormControl([{ disabled: true }]),
-    unit: new FormControl(['', Validators.required]),
+    item: new FormControl('', Validators.required),
+    price: new FormControl(0, [Validators.required, Validators.min(0)]),
+    quantity: new FormControl(0, [Validators.required, Validators.min(0)]),
+    unit: new FormControl(''),
+    amount: new FormControl(0),
   });
+
+  ngOnInit() {
+    this.loadItems();
+    this.loadUnits();
+    this.setupAmountCalculation();
+  }
 
   constructor(
     public dialogRef: MatDialogRef<ItemPositionCreateComponent>,
@@ -43,6 +46,18 @@ export class ItemPositionCreateComponent {
     private apiService: ApiService, // assuming you have a service to fetch items
     private itemDialogHandler: ItemDialogHandler
   ) {}
+
+  private setupAmountCalculation(): void {
+    // Subscribe to changes in 'price' and 'quantity'
+    this.form.valueChanges.subscribe((values) => {
+      const price = values.price || 0;
+      const quantity = values.quantity || 0;
+      const amount = price * quantity;
+
+      // Update the 'amount' field
+      this.form.controls['amount'].setValue(amount, { emitEvent: false });
+    });
+  }
 
   openItemModal(): void {
     this.itemDialogHandler.createItemHandler((newItem) => {
@@ -75,6 +90,9 @@ export class ItemPositionCreateComponent {
       const values = this.form.value;
 
       this.dialogRef.close(values);
+    } else {
+      console.log('Invalid form');
+      console.log(this.form.errors);
     }
   }
 }

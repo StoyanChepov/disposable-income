@@ -11,9 +11,11 @@ import {
 import { CommonModule } from '@angular/common';
 import { ApiService } from '../../api.service';
 import { Position } from '../../types/position';
+import { ItemPosition } from '../../types/itemPosition';
 import { CategoryDialogHandler } from '../../categories/create-category-handler';
 import { ItemPosDialogHandler } from '../../item-position/add-item-position/create-item-pos-handler';
 import { CurrencyPipe, DatePipe, TitleCasePipe } from '@angular/common';
+import { Category } from '../../types/category';
 
 @Component({
   selector: 'app-add-position',
@@ -31,8 +33,8 @@ import { CurrencyPipe, DatePipe, TitleCasePipe } from '@angular/common';
   styleUrl: './add-position.component.css',
 })
 export class AddPositionComponent implements OnInit {
-  categories: any[] = [];
-  itemPositions: any[] = [];
+  categories: Category[] = [];
+  itemPositions: ItemPosition[] = [];
   showCategoryModal = false;
   showItemPosModal = false;
   type: string | null = null;
@@ -49,15 +51,21 @@ export class AddPositionComponent implements OnInit {
   form = new FormGroup({
     title: new FormControl('', [Validators.required]),
     date: new FormControl('', [Validators.required]),
-    category: new FormControl(null, []),
-    amount: new FormControl('', [Validators.required]),
+    category: new FormControl('', []),
+    amount: new FormControl(0, [Validators.required]),
   });
 
   updateAmount(): void {
+    if (!this.itemPositions || !Array.isArray(this.itemPositions)) {
+      console.error('itemPositions is not an array or is undefined');
+      return;
+    }
+
     const amount = this.itemPositions.reduce(
-      (acc, item) => acc + item.quantity * item.price,
+      (acc, item) => acc + (item.quantity ?? 0) * (item.price ?? 0),
       0
     );
+
     this.form.controls['amount'].setValue(amount);
   }
 
@@ -100,8 +108,9 @@ export class AddPositionComponent implements OnInit {
   openItemPositionModal(): void {
     this.createItemPosHandler.createItemPosHandler((newItemPos) => {
       if (newItemPos) {
-        console.log('New item position created:', newItemPos);
-        this.itemPositions.push(newItemPos);
+        this.itemPositions = [...this.itemPositions, newItemPos];
+        console.log('New item positions array:', newItemPos);
+        
         sessionStorage.setItem(
           'itemPositions',
           JSON.stringify(this.itemPositions)
@@ -119,12 +128,14 @@ export class AddPositionComponent implements OnInit {
 
         this.categories = categories;
         if (this.categories.length > 0) {
-          this.form.get('category')?.setValue(this.categories[0]._id);
+          this.form.get('category')?.setValue(this.categories[0]?._id);
         }
       });
 
       // Load item positions from sessionStorage
       const cachedData = sessionStorage.getItem('itemPositions');
+      console.log('Cached data:', cachedData);
+
       if (cachedData) {
         this.itemPositions = JSON.parse(cachedData);
       }
