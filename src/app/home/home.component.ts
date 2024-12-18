@@ -1,45 +1,46 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal, computed } from '@angular/core';
 import { UserService } from '../user/user.service';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Position } from '../types/position';
 import { ApiService } from '../api.service';
+import { CurrencyPipe, DatePipe, TitleCasePipe } from '@angular/common';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [RouterLink],
+  imports: [RouterLink, CurrencyPipe, DatePipe, TitleCasePipe],
   templateUrl: './home.component.html',
-  styleUrl: './home.component.css',
+  styleUrls: ['./home.component.css'], // Note the corrected property name to `styleUrls`
 })
 export class HomeComponent implements OnInit {
-  positions: Position[] = [];
-  hoveredId: string | undefined = undefined;
+  // Signals for reactive state management
+  positions = signal<Position[]>([]);
+  hoveredId = signal<string | undefined>(undefined);
+  isLoggedIn = computed(() => this.userService.isLogged);
+
   constructor(
     private userService: UserService,
     private router: Router,
     private apiService: ApiService
   ) {}
-  get isLoggedIn(): boolean {
-    return this.userService.isLogged;
-  }
+
   ngOnInit(): void {
-    if (this.isLoggedIn) {
+    if (this.isLoggedIn()) {
       this.apiService.getLatestPositions(3).subscribe((positions) => {
         console.log('All positions:', positions);
-
-        this.positions = positions;
-        //this.isLoading = false;
+        this.positions.set(positions); // Update the signal
       });
     }
   }
 
   handleMouseEnter(id: string | undefined): void {
-    this.hoveredId = id;
+    this.hoveredId.set(id); // Update the signal
   }
 
   handleClick(): void {
-    if (this.hoveredId !== null && this.hoveredId !== undefined) {
-      this.router.navigate([`/positions/${this.hoveredId}/details`]);
+    const id = this.hoveredId(); // Access the signal value
+    if (id) {
+      this.router.navigate([`/positions/${id}/details`]);
     }
   }
 }

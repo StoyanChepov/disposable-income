@@ -1,5 +1,5 @@
 <section id="home">
-  @if(isLoggedIn) { @if(positions.length == 0) {
+  @if(isLoggedIn()) { @if(positions().length == 0) {
   <div class="buttons">
     <a
       class="button"
@@ -21,16 +21,17 @@
     <div class="welcome-message">
       <h3>Latest Expenses</h3>
     </div>
-    @for(position of positions; track $index) {
+    @for(position of positions(); track $index) {
     <div
       class="expense"
       (click)="handleClick()"
       (mouseenter)="handleMouseEnter(position?._id)"
     >
-      <h3>{{ position.title }}</h3>
-      <p>Amount: {{ position.amount }} $</p>
-      <p>Date: {{ position.date.toString().split("T")[0] }}</p>
-      <!-- <p>Category: {{ position.category.name }}</p> -->
+      <p>{{ position.title | titlecase }}</p>
+      <p [style.color]="position.type === 'expense' ? 'red' : 'green'">
+        {{ position.amount | currency }}
+      </p>
+      <p>{{ position.date.toString().split("T")[0] | date }}</p>
     </div>
     }
   </div>
