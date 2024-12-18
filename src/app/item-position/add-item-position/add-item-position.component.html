@@ -1,0 +1,68 @@
+<h2>Add a line</h2>
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div class="form-group">
+    <label for="item">Item</label>
+    <select id="item" class="form-control" formControlName="item">
+      <option *ngFor="let item of items" [value]="item._id">
+        {{ item.name }}
+      </option>
+    </select>
+    <a
+      (click)="openItemModal()"
+      class="button"
+      id="create-category-button"
+      title="Create Item"
+    >
+      +
+    </a>
+  </div>
+
+  <div class="form-group">
+    <label for="price">Price</label>
+    <input
+      id="price"
+      class="form-control"
+      formControlName="price"
+      placeholder="Enter price"
+      type="number"
+    />
+  </div>
+
+  <div class="form-group">
+    <label for="quantity">Quantity</label>
+    <input
+      id="quantity"
+      class="form-control"
+      formControlName="quantity"
+      placeholder="Enter quantity"
+      type="number"
+    />
+  </div>
+
+  <div class="form-group">
+    <label for="unit">Unit</label>
+    <select id="unit" class="form-control" formControlName="unit">
+      <option *ngFor="let unit of units" [value]="unit._id">
+        {{ unit.name }}
+      </option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label for="amount">Amount</label>
+    <input
+      id="amount"
+      class="form-control"
+      formControlName="amount"
+      placeholder="Amount"
+      type="number"
+      readonly
+    />
+  </div>
+  <div class="buttons">
+    <button class="button" type="button" (click)="onCancel()">Cancel</button>
+    <button class="button" [disabled]="form.invalid" type="submit">
+      Create
+    </button>
+  </div>
+</form>

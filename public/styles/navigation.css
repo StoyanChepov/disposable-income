@@ -6,11 +6,6 @@ body {
   background-size: cover;
 }
 
-.auth {
-  width: 100px;
-  margin: 8em auto;
-}
-
 header,
 footer {
   background-color: #29303c;

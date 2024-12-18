@@ -39,6 +39,11 @@ export class ApiService {
     return this.http.post(`/api/categories/create`, { name });
   }
 
+  
+  createItem(name: string) {
+    return this.http.post(`/api/items/create`, { name });
+  }
+
   getAllItems() {
     return this.http.get<any[]>(`/api/items`);
   }

@@ -12,7 +12,7 @@ import { CommonModule } from '@angular/common';
 import { ApiService } from '../../api.service';
 import { Position } from '../../types/position';
 import { CategoryDialogHandler } from '../../categories/create-category-handler';
-import { ItemPosDialogHandler } from '../../item-positions/create-item-pos-handler';
+import { ItemPosDialogHandler } from '../../item-position/add-item-position/create-item-pos-handler';
 import { CurrencyPipe, DatePipe, TitleCasePipe } from '@angular/common';
 
 @Component({
