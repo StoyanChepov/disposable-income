@@ -125,3 +125,8 @@ select:focus {
     gap: 10px; /* Adjust spacing */
   }
 }
+
+.invalid {
+    border: 1px solid red;
+    background-color: #ffe6e6;
+  }

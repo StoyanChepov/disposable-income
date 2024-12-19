@@ -7,7 +7,7 @@ export interface ItemPosition {
   price: number;
   userId: string;
   item: Item;
-  position: string;
+  positionId: string;
   createdOn: Date;
   unit: Unit;
 }

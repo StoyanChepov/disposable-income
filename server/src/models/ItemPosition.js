@@ -11,7 +11,7 @@ const itempositionSchema = new Schema({
   item: { type: Types.ObjectId, ref: "Item", required: false },
   position: { type: Types.ObjectId, ref: "Position", required: true },
   createdOn: { type: Date, required: true },
-  unit: { type: Types.ObjectId, ref: "Unit", required: false },
+  unit: { type: String, required: true },
 });
 
 const ItemPosition = model("ItemPosition", itempositionSchema);

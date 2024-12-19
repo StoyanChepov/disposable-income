@@ -238,11 +238,11 @@ async function createLine(data, authorId) {
     amount: data.amount,
     price: data.price,
     quantity: data.quantity,
-    item: JSON.parse(data.item)._id,
+    item: data.item,
     position: data.positionId,
     userId: authorId,
     createdOn: new Date().toISOString()?.split("T")[0],
-    unit: JSON.parse(data.unit)._id,
+    unit: data.unit,
   });
   await newPosition.save();
 

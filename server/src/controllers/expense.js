@@ -218,7 +218,6 @@ expenseRouter.post(
 expenseRouter.post(
   "/expenses/create/line",
   auth,
-  body("id").trim(),
   body("amount")
     .trim()
     .isLength({ min: 1 })
@@ -227,37 +226,41 @@ expenseRouter.post(
     .trim()
     .isLength({ min: 1 })
     .withMessage("Quantity must be at least 1 character long!"),
-  body("item").trim(),
+  body("item").trim().notEmpty().withMessage("Item is required!"),
   body("price")
     .trim()
     .isLength({ min: 1 })
     .withMessage("Price must be at least 1 character long!"),
-  body("unit").trim().isLength({ min: 1 }),
+  body("unit").trim().notEmpty().withMessage("Unit is required!"),
   async (req, res) => {
     try {
       const validation = validationResult(req);
-      if (validation.errors.length) {
+      if (!validation.isEmpty()) {
         return res.status(402).send({ errors: validation.errors });
       }
-      if (req.user === undefined && req.user._id === undefined) {
-        res
+
+      if (!req.user || !req.user._id) {
+        return res
           .status(401)
           .send({ message: "You are not authorized to perform this action!" });
       }
-      console.log("BODY", req.body);
+
+      console.log("BODY:", req.body); // Logs the received payload
+
+      // Example logic to handle the data
+      const { item, price, quantity, unit, amount, positionId } = req.body;
 
       const result = await createLine(req.body, req.user._id);
       console.log("Result", result);
 
-      res.send(result).status(200);
+      // Example response
+      res.status(201).send({
+        message: "Line item created successfully",
+        data: { item, price, quantity, unit, amount, positionId },
+      });
     } catch (error) {
-      console.log("Error:", error);
-      res
-        .send({
-          errors: parseError(error).errors,
-          data: req.body,
-        })
-        .status(402);
+      console.error("Error:", error);
+      res.status(500).send({ message: "Server error occurred!" });
     }
   }
 );

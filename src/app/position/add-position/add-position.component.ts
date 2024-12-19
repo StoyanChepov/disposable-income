@@ -73,6 +73,7 @@ export class AddPositionComponent implements OnInit {
   create() {
     if (this.form.invalid) {
       console.log('Invalid form');
+      this.form.markAllAsTouched(); // Highlight all invalid fields
       return;
     }
 
@@ -87,6 +88,19 @@ export class AddPositionComponent implements OnInit {
 
       const typedPosition = position as Position; // Specify the expected type
       if (typedPosition && typedPosition._id) {
+        this.itemPositions.forEach((item) => {
+          const itemPos = {
+            ...item,
+            positionId: typedPosition._id,
+            item: item.item._id,
+            unit: item.unit.name,
+          };
+          this.apiService.createItemPosition(itemPos).subscribe((itemPos) => {
+            console.log('Item position created:', itemPos);
+          });
+        });
+
+        // Clear the itemPositions cache
         sessionStorage.removeItem('itemPositions');
 
         this.router.navigate([`/positions/${typedPosition._id}/details`]);

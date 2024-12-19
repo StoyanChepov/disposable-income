@@ -65,3 +65,8 @@ form {
   justify-content: center;
   text-align: center;
 }
+
+.invalid {
+    border: 1px solid red;
+    background-color: #ffe6e6;
+  }

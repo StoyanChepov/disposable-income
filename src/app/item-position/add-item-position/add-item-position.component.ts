@@ -107,6 +107,7 @@ export class ItemPositionCreateComponent implements OnInit {
   }
 
   onCancel(): void {
+    this.form.reset();
     this.dialogRef.close();
   }
 
@@ -126,6 +127,7 @@ export class ItemPositionCreateComponent implements OnInit {
     } else {
       console.log('Invalid form');
       console.log(this.form.errors);
+      this.form.markAllAsTouched();
     }
   }
 }
