@@ -1,0 +1,54 @@
+footer {
+    background-color: #222; /* Dark background for the footer */
+    color: #fff; /* White text for contrast */
+    padding: 20px 0; /* Padding for spacing */
+    text-align: center; /* Center-align text for smaller screens */
+  }
+  
+  footer .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px; /* Space between sections inside the footer */
+    max-width: 1200px; /* Limit width for larger screens */
+    margin: 0 auto; /* Center the footer content */
+    padding: 0 15px; /* Add side padding for small screens */
+  }
+  
+  footer p {
+    margin: 0; /* Remove default paragraph margin */
+    font-size: 14px; /* Small font size for copyright text */
+  }
+  
+  footer .social-icons {
+    display: flex;
+    gap: 10px; /* Space between social icons */
+  }
+  
+  footer .social-icons a {
+    color: #fff; /* White color for icons */
+    font-size: 18px; /* Icon size */
+    transition: color 0.3s; /* Smooth color change on hover */
+  }
+  
+  footer .social-icons a:hover {
+    color: #1e90ff; /* Change to a highlight color on hover */
+  }
+  
+  footer .additional-links {
+    display: flex;
+    gap: 15px; /* Space between additional links */
+    flex-wrap: wrap; /* Allow links to wrap on smaller screens */
+    justify-content: center; /* Center align the links */
+  }
+  
+  footer .additional-links a {
+    color: #fff; /* White text for links */
+    text-decoration: none; /* Remove underline */
+    font-size: 14px; /* Small font size for footer links */
+    transition: color 0.3s; /* Smooth color change on hover */
+  }
+  
+  footer .additional-links a:hover {
+    color: #1e90ff; /* Highlight color on hover */
+  }

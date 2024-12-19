@@ -42,7 +42,6 @@ export class ItemPositionCreateComponent implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<ItemPositionCreateComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { object: string },
-    private fb: FormBuilder,
     private apiService: ApiService, // assuming you have a service to fetch items
     private itemDialogHandler: ItemDialogHandler
   ) {}
@@ -71,14 +70,40 @@ export class ItemPositionCreateComponent implements OnInit {
 
   loadItems() {
     this.apiService.getAllItems().subscribe((items) => {
+      console.log('Items:', items);
+
       this.items = items;
+      if (this.items.length > 0) {
+        this.form.get('item')?.setValue(this.items[0]?._id);
+      }
     });
   }
 
   loadUnits() {
-    this.apiService.getAllUnits().subscribe((units) => {
-      this.units = units;
-    });
+    //this.apiService.getAllUnits().subscribe((units) => {
+    let defaultUnits: Unit[] = [
+      {
+        name: 'pcs',
+        createdOn: new Date(),
+      },
+      {
+        name: 'kg',
+        createdOn: new Date(),
+      },
+      {
+        name: 'm',
+        createdOn: new Date(),
+      },
+      {
+        name: 'h',
+        createdOn: new Date(),
+      },
+    ];
+    this.units = defaultUnits;
+    if (this.units.length > 0) {
+      this.form.get('unit')?.setValue(this.units[0]?.name);
+    }
+    //});
   }
 
   onCancel(): void {
@@ -88,8 +113,16 @@ export class ItemPositionCreateComponent implements OnInit {
   onSubmit(): void {
     if (this.form.valid) {
       const values = this.form.value;
+      const selectedItem = this.items.find((item) => item._id === values.item);
+      const selectedUnit = this.units.find((unit) => unit.name === values.unit);
 
-      this.dialogRef.close(values);
+      const result = {
+        ...values,
+        item: selectedItem,
+        unit: selectedUnit,
+      };
+      console.log('Form submitted:', result);
+      this.dialogRef.close(result);
     } else {
       console.log('Invalid form');
       console.log(this.form.errors);

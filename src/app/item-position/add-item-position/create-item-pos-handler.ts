@@ -11,10 +11,6 @@ export class ItemPosDialogHandler {
 
   constructor(private dialog: MatDialog, private apiService: ApiService) {}
 
-  saveToCache = (value: any) => {
-    sessionStorage.setItem('itemPositions', JSON.stringify(value));
-  };
-
   createItemPosHandler(handleItemPosCreated: (itemPos: any) => void): void {
     if (this.dialogRef) {
       console.log('A dialog is already open.');

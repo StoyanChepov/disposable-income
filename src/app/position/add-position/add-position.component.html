@@ -42,8 +42,7 @@
             id="create-category-button"
             type="button"
             (click)="openCategoryModal()"
-          >
-            + Add Category
+            >+
           </a>
         </div>
       </div>
@@ -61,10 +60,10 @@
       </thead>
       <tbody>
         <tr *ngFor="let item of itemPositions">
-          <td>{{ item.item }}</td>
-          <td>{{ item.quantity }}</td>
-          <td>{{ item.price | currency}}</td>
-          <td>{{ item.amount }}</td>
+          <td>{{ item.item.name }}</td>
+          <td>{{ item.quantity }} {{ item.unit.name }}</td>
+          <td>{{ item.price | currency }}</td>
+          <td>{{ item.amount | currency }}</td>
         </tr>
       </tbody>
     </table>

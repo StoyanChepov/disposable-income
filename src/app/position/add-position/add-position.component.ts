@@ -1,5 +1,5 @@
 // position-create.component.ts
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { RouterLink, Router, ActivatedRoute } from '@angular/router';
 import {
   FormControl,
@@ -20,6 +20,7 @@ import { Category } from '../../types/category';
 @Component({
   selector: 'app-add-position',
   standalone: true,
+  encapsulation: ViewEncapsulation.ShadowDom,
   imports: [
     RouterLink,
     FormsModule,
@@ -110,7 +111,7 @@ export class AddPositionComponent implements OnInit {
       if (newItemPos) {
         this.itemPositions = [...this.itemPositions, newItemPos];
         console.log('New item positions array:', newItemPos);
-        
+
         sessionStorage.setItem(
           'itemPositions',
           JSON.stringify(this.itemPositions)
@@ -143,5 +144,9 @@ export class AddPositionComponent implements OnInit {
       // Calculate total amount
       this.updateAmount();
     });
+  }
+
+  ngOnDestroy() {
+    sessionStorage.removeItem('itemPositions');
   }
 }

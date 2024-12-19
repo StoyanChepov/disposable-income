@@ -1,12 +1,13 @@
+import { Item } from './item';
+import { Unit } from './unit';
+
 export interface ItemPosition {
   amount: number;
   quantity: number;
   price: number;
   userId: string;
-  item: string;
+  item: Item;
   position: string;
   createdOn: Date;
-  unit: string;
+  unit: Unit;
 }
-
-
