@@ -13,9 +13,10 @@ import { ApiService } from '../../api.service';
 import { Position } from '../../types/position';
 import { ItemPosition } from '../../types/itemPosition';
 import { CategoryDialogHandler } from '../../categories/create-category-handler';
-import { ItemPosDialogHandler } from '../../item-position/add-item-position/create-item-pos-handler';
+import { ItemPosDialogHandler } from '../../item-position/item-pos-handler';
 import { CurrencyPipe, DatePipe, TitleCasePipe } from '@angular/common';
 import { Category } from '../../types/category';
+import { ItemPositionEditComponent } from '../../item-position/edit-item-position/edit-item-position.component';
 
 @Component({
   selector: 'app-add-position',
@@ -29,6 +30,7 @@ import { Category } from '../../types/category';
     CurrencyPipe,
     DatePipe,
     TitleCasePipe,
+    ItemPositionEditComponent,
   ],
   templateUrl: './add-position.component.html',
   styleUrl: './add-position.component.css',
@@ -40,6 +42,7 @@ export class AddPositionComponent implements OnInit {
   showItemPosModal = false;
   type: string | null = null;
   showModal = false;
+  hoveredId: string | undefined = undefined;
 
   constructor(
     private router: Router, //private positionService: PositionService, //private categoryService: CategoryService
@@ -93,7 +96,7 @@ export class AddPositionComponent implements OnInit {
             ...item,
             positionId: typedPosition._id,
             item: item.item._id,
-            unit: item.unit.name,
+            unit: item.unit,
           };
           this.apiService.createItemPosition(itemPos).subscribe((itemPos) => {
             console.log('Item position created:', itemPos);
@@ -135,6 +138,25 @@ export class AddPositionComponent implements OnInit {
     });
   }
 
+  openEditItemPositionModal(): void {
+    this.createItemPosHandler.editItemPosHandler((editedItemPos) => {
+      if (editedItemPos) {
+        //replace the item PositionDetailsComponent with the edited itemPos
+        console.log('Edited item position is:', editedItemPos);
+
+        this.itemPositions = this.itemPositions.map((item) =>
+          item._id === editedItemPos._id ? editedItemPos : item
+        );
+        sessionStorage.setItem(
+          'itemPositions',
+          JSON.stringify(this.itemPositions)
+        );
+        this.hoveredId = undefined;
+        this.updateAmount();
+      }
+    }, this.hoveredId!);
+  }
+
   ngOnInit() {
     this.route.queryParamMap.subscribe((params) => {
       this.type = params.get('type');
@@ -162,5 +184,15 @@ export class AddPositionComponent implements OnInit {
 
   ngOnDestroy() {
     sessionStorage.removeItem('itemPositions');
+  }
+
+  handleMouseEnter(id: string | undefined): void {
+    this.hoveredId = id;
+  }
+
+  handleClick(): void {
+    if (this.hoveredId !== null && this.hoveredId !== undefined) {
+      this.openEditItemPositionModal();
+    }
   }
 }

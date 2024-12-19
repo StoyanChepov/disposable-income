@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Position } from './types/position';
 import { ItemPositionCreation } from './types/itemPositionCreation';
+import { ItemPosition } from './types/itemPosition';
 @Injectable({
   providedIn: 'root',
 })
@@ -17,6 +18,10 @@ export class ApiService {
 
   getPositionById(id: string) {
     return this.http.get<Position>(`/api/expenses/${id}`);
+  }
+
+  getItemPositionById(id: string) {
+    return this.http.get<ItemPosition>(`/api/expenses/line/${id}`);
   }
 
   removePosition(id: string) {

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { ConfirmCreateComponent } from '../../modals/confirm-create/confirm-create.component'; // Update the path based on your project structure
-import { ApiService } from '../../api.service'; // Update the path based on your project structure
+import { ConfirmCreateComponent } from '../modals/confirm-create/confirm-create.component'; // Update the path based on your project structure
+import { ApiService } from '../api.service'; // Update the path based on your project structure
 
 @Injectable({
   providedIn: 'root', // Or provide it in the specific module if needed

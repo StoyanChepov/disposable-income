@@ -19,7 +19,9 @@
           type="date"
           required
           title="Enter date"
-          [class.invalid]="form.get('date')?.invalid && form.get('date')?.touched"
+          [class.invalid]="
+            form.get('date')?.invalid && form.get('date')?.touched
+          "
         />
       </div>
 
@@ -30,7 +32,9 @@
             class="custom-select__control"
             id="category"
             formControlName="category"
-            [class.invalid]="form.get('category')?.invalid && form.get('category')?.touched"
+            [class.invalid]="
+              form.get('category')?.invalid && form.get('category')?.touched
+            "
           >
             @for(category of categories; track $index) {
             <option [value]="category._id" [selected]="$index === 0">
@@ -62,9 +66,13 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let item of itemPositions">
+        <tr
+          *ngFor="let item of itemPositions"
+          (click)="handleClick()"
+          (mouseenter)="handleMouseEnter(item?._id)"
+        >
           <td>{{ item.item.name }}</td>
-          <td>{{ item.quantity }} {{ item.unit.name }}</td>
+          <td>{{ item.quantity }} {{ item.unit }}</td>
           <td>{{ item.price | currency }}</td>
           <td>{{ item.amount | currency }}</td>
         </tr>
@@ -88,7 +96,9 @@
         type="number"
         id="amount"
         formControlName="amount"
-        [class.invalid]="form.get('amount')?.invalid && form.get('amount')?.touched"
+        [class.invalid]="
+          form.get('amount')?.invalid && form.get('amount')?.touched
+        "
       />
     </div>
     <div class="buttons">

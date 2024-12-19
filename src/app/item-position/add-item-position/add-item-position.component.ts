@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MatDialogRef } from '@angular/material/dialog';
 import {
   FormBuilder,
   FormGroup,
@@ -12,7 +12,7 @@ import { ApiService } from '../../api.service';
 import { Item } from '../../types/item';
 import { Unit } from '../../types/unit';
 import { CommonModule } from '@angular/common';
-import { ItemDialogHandler } from './create-item-handler';
+import { ItemDialogHandler } from '../create-item-handler';
 @Component({
   selector: 'app-add-item-position',
   templateUrl: './add-item-position.component.html',
@@ -22,8 +22,8 @@ import { ItemDialogHandler } from './create-item-handler';
   imports: [FormsModule, ReactiveFormsModule, CommonModule],
 })
 export class ItemPositionCreateComponent implements OnInit {
-  items: any[] = [];
-  units: any[] = [];
+  items: Item[] = [];
+  units: string[] = [];
 
   form = new FormGroup({
     item: new FormControl('', Validators.required),
@@ -41,7 +41,6 @@ export class ItemPositionCreateComponent implements OnInit {
 
   constructor(
     public dialogRef: MatDialogRef<ItemPositionCreateComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { object: string },
     private apiService: ApiService, // assuming you have a service to fetch items
     private itemDialogHandler: ItemDialogHandler
   ) {}
@@ -81,27 +80,10 @@ export class ItemPositionCreateComponent implements OnInit {
 
   loadUnits() {
     //this.apiService.getAllUnits().subscribe((units) => {
-    let defaultUnits: Unit[] = [
-      {
-        name: 'pcs',
-        createdOn: new Date(),
-      },
-      {
-        name: 'kg',
-        createdOn: new Date(),
-      },
-      {
-        name: 'm',
-        createdOn: new Date(),
-      },
-      {
-        name: 'h',
-        createdOn: new Date(),
-      },
-    ];
+    let defaultUnits: string[] = ['pcs', 'kg', 'm', 'h'];
     this.units = defaultUnits;
     if (this.units.length > 0) {
-      this.form.get('unit')?.setValue(this.units[0]?.name);
+      this.form.get('unit')?.setValue(this.units[0]);
     }
     //});
   }
@@ -115,12 +97,14 @@ export class ItemPositionCreateComponent implements OnInit {
     if (this.form.valid) {
       const values = this.form.value;
       const selectedItem = this.items.find((item) => item._id === values.item);
-      const selectedUnit = this.units.find((unit) => unit.name === values.unit);
+      const selectedUnit = this.units.find((unit) => unit === values.unit);
 
       const result = {
         ...values,
         item: selectedItem,
         unit: selectedUnit,
+        status: 'new',
+        _id: Math.random().toString(36),
       };
       console.log('Form submitted:', result);
       this.dialogRef.close(result);

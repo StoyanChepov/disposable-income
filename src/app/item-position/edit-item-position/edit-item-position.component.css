@@ -1,0 +1,72 @@
+form {
+  display: flex;
+  flex-wrap: wrap; /* Allow items to wrap to the next line */
+  gap: 20px; /* Space between form groups */
+  align-items: flex-start; /* Align items at the top */
+  padding: 20px; /* Add padding around the form */
+  border: 1px solid #ccc; /* Add a border around the form */
+  border-radius: 8px; /* Rounded corners for the form */
+  background-color: #f9f9f9; /* Light background color for the form */
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column; /* Stack label and input vertically */
+  flex: 1 1 calc(33.33% - 20px); /* Flexible width, adjust as needed */
+  min-width: 200px; /* Minimum width for form groups */
+}
+
+.form-group label {
+  font-weight: bold; /* Emphasize labels */
+  margin-bottom: 5px; /* Add spacing below labels */
+}
+
+.form-control,
+.form-group select {
+  padding: 10px; /* Consistent padding for inputs and dropdowns */
+  border: 1px solid #ccc; /* Basic border for inputs */
+  border-radius: 4px; /* Rounded corners */
+  font-size: 14px; /* Adjust font size for inputs */
+  width: 100%; /* Ensure inputs take full width of their container */
+  box-sizing: border-box; /* Include padding and border in width calculation */
+  height: 40px; /* Ensure consistent height for inputs and dropdowns */
+}
+
+.buttons {
+  display: flex;
+  gap: 10px; /* Space between buttons */
+  margin-top: 20px; /* Add spacing above buttons */
+  flex: 1 1 100%; /* Buttons take full width of row */
+  justify-content: flex-end; /* Align buttons to the right */
+}
+
+.button {
+  padding: 10px 20px; /* Button padding */
+  border: none; /* Remove border */
+  border-radius: 4px; /* Rounded corners */
+  cursor: pointer; /* Pointer cursor for buttons */
+  font-size: 14px; /* Font size for buttons */
+}
+
+#amount {
+  background-color: #e9ecef; /* Light background for read-only field */
+  cursor: not-allowed; /* Indicate field is not editable */
+}
+
+#create-category-button {
+  padding: 0 15px; /* Add horizontal padding */
+  border: 1px solid #ccc; /* Consistent border */
+  border-radius: 4px; /* Rounded corners */
+  height: 40px; /* Match input field height */
+  font-size: 14px;
+  cursor: pointer;
+  display: flex; /* Ensure content is centered */
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.invalid {
+  border: 1px solid red;
+  background-color: #ffe6e6;
+}
